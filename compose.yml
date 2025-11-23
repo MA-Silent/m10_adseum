@@ -43,6 +43,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_LOCATION: ${DATABASE_LOCATION}
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_LOCATION}/${DATABASE_NAME}"
     entrypoint: >
         bash -c "
           echo 'Waiting for Postgres...';
