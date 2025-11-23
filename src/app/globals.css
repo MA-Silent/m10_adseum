@@ -3,3 +3,7 @@
 @theme {
     --color-secondary: #FF7000;
 }
+
+html,body{
+    @apply h-full;
+}

@@ -5,24 +5,21 @@ import path from "path";
 
 export default getRequestConfig(async () => {
   const locales = ['en'];
-  let locale = "en";
-
-  const header = await headers();
-  const languages = header.get('accept-language')?.split(',').reverse();
 
   const fileLocales = fs.readdirSync(path.join(process.cwd(), "locales"));
+  fileLocales.forEach((loc) => {
+    locales.push(loc.slice(0, 2));
+  });
 
-  fileLocales.forEach((locale)=>{
-    locales.push(locale.slice(0, 2));
-  })
+  const header = await headers();
+  const accept = header.get("accept-language") || "";
 
-  languages?.forEach((lang)=>{
-    const slice = lang.slice(0, 2);
+  const candidates = accept
+    .split(',')
+    .map(l => l.trim().slice(0, 2))
+    .filter(l => /^[a-z]{2}$/.test(l));
 
-    if(locales.includes(slice)){
-      locale = slice;
-    }
-  })
+  const locale = candidates.find(c => locales.includes(c)) || "en";
 
   return {
     locale,

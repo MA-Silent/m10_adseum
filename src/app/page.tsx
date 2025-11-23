@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <Header />
       <main className="h-full pt-14 flex justify-center items-center">
-        <section>Hello world</section>
+        <section>{t('title')}</section>
       </main>
     </>
   );

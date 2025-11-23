@@ -8,6 +8,6 @@ export default defineConfig({
   },
   engine: "classic",
   datasource: {
-    url: env("DATABASE_URL"),
+    url: `postgresql://${env('POSTGRES_USER')}:${env('POSTGRES_PASSWORD')}@${env('DATABASE_LOCATION')}/${env('DATABASE_NAME')}`,
   },
 });
