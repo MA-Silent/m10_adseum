@@ -1,14 +1,17 @@
-import { useTranslations } from "next-intl";
-import Header from "../components/header";
+"use server"
 
-export default function Home() {
-  const t = useTranslations('Homepage');
+import Header from "../components/Header";
+import { getTranslations } from "next-intl/server";
+
+export default async function Home() {
+  const t = await getTranslations('Homepage');
 
   return (
     <>
       <Header />
       <main className="h-full pt-14 flex justify-center items-center">
-        <section>{t('title')}</section>
+        <section hidden>{t('title')}</section>
+        <section></section>
       </main>
     </>
   );

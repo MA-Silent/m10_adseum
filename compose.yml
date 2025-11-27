@@ -32,6 +32,7 @@ services:
         COPY . .
     ports:
       - "3000:3000"
+      - "5555:5555"
     volumes:
       - .:/app
       - node_modules:/app/node_modules
@@ -54,8 +55,6 @@ services:
           echo 'Starting Bun app...';
           bun run dev
         "
-
-
 
 volumes:
   node_modules:

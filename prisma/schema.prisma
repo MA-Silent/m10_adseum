@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output = "../src/generated"
 }
 
 datasource db {
@@ -20,4 +21,37 @@ model Post {
   content String
   author User @relation(fields: [authorId], references: [id])
   authorId Int
+}
+
+model shopItem {
+  id Int @id @default(autoincrement())
+  title String
+  price Float
+  description String
+  shortDesc String
+  images String[]
+  sale Float
+  stock Int
+}
+
+model Artist {
+  uuid String @id @default(uuid())
+  name String
+  description String
+  shortDesc String
+  images String[]
+}
+
+model Component {
+  id Int @id @default(autoincrement())
+  importPath String @unique
+  nameComponent String @unique
+  pages Page[]
+}
+
+model Page {
+  id Int @id @default(autoincrement())
+  title String
+  slug String @unique
+  components Component[]
 }
