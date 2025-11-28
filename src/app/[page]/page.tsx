@@ -1,5 +1,3 @@
-"use server"
-
 import { prisma } from "@/src/lib/prisma";
 
 export default async function Page({ params }: { params: Promise<{ page: string }> }) {
@@ -12,10 +10,11 @@ export default async function Page({ params }: { params: Promise<{ page: string 
 
   return (
     <div>
-      {page.components?.map(async (comp)=>{
+      {page.components?.map(async (comp, index)=>{
         const Component = (await import(`@/src/components/${comp.importPath}`)).default;
-        return <Component key={comp.id}/>
+        return <Component key={index}/>
       })}
+      test
     </div>
   );
 }

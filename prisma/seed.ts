@@ -72,6 +72,18 @@ async function main() {
     },
   });
 
+  const testPage = await prisma.page.upsert({
+    where: { slug: 'test-page' },
+    update: {},
+    create: {
+      title: 'Test Page',
+      slug: 'test-page',
+      components: {
+
+      },
+    },
+  });
+
   await prisma.page.update({
     where: { id: aboutPage.id },
     data: {
