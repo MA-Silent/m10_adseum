@@ -19,7 +19,6 @@ export default function CmsAddButton({ pageSlug }: {pageSlug : string}) {
 
     availableComponents.map((component, index)=>{
       const a = (<button className="bg-blue-800 w-full border-b text-white hover:bg-white hover:text-black" onClick={()=>handleAdd(component)} key={index}>{component}</button>)
-
       newComps.push(a);
     })
 
@@ -28,7 +27,6 @@ export default function CmsAddButton({ pageSlug }: {pageSlug : string}) {
 
   async function handleAdd(component: string): Promise<undefined>{
     await addComponentToPage(component, pageSlug);
-    location.reload();
     setComponents([]);
   }
 
@@ -37,7 +35,7 @@ export default function CmsAddButton({ pageSlug }: {pageSlug : string}) {
       <div className="w-full justify-center flex">
         <button className="bg-zinc-600 text-white rounded px-2 w-1/4" onClick={handleClick}>+</button>
       </div>
-      <div className="fixed top-0 right-0 bottom-0 w-1/12 overflow-auto">
+      <div className="fixed top-0 right-0 bottom-0 w-1/12 overflow-auto" style={components[0] == undefined ? {visibility: `hidden`} : {visibility: `visible`}}>
         {components}
       </div>
     </>

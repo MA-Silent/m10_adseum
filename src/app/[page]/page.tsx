@@ -14,7 +14,6 @@ export default async function Page({ params }: { params: Promise<{ page: string 
         const Component = (await import(`@/src/components/${comp.importPath}`)).default;
         return <Component key={index}/>
       })}
-      test
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import fs from "fs";
 import path from "path";
 import { prisma } from "./prisma";
+import { revalidatePath } from "next/cache";
 
 export async function getAvailableComponents(): Promise<string[]> {
   const fsRead = fs.readdirSync(path.join(process.cwd(), "src/components"));
@@ -38,4 +39,6 @@ export async function addComponentToPage(componentFile: string, slug: string){
       },
     },
   });
+
+  revalidatePath('/cms');
 }
