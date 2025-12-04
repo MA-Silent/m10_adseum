@@ -1,8 +1,10 @@
 import { PrismaClient } from "@/src/generated/client";
+import * as bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 async function main() {
+  // --- COMPONENT ---
   const headerComponent = await prisma.component.upsert({
     where: { importPath: "Header" },
     update: {},
@@ -12,74 +14,89 @@ async function main() {
     },
   });
 
-
-  const alice = await prisma.user.upsert({
-    where: { email: 'alice@prisma.io' },
+  const admin = await prisma.user.upsert({
+    where: {email: "admin@admin.admin"},
     update: {},
     create: {
-      email: 'alice@prisma.io',
-      name: 'Alice',
+      email: "admin@admin.admin",
+      name: "admin",
+      password: (await bcrypt.hash("admin", 10))
+    }
+  })
+
+  // --- USERS ---
+  const alice = await prisma.user.upsert({
+    where: { email: "alice@prisma.io" },
+    update: {},
+    create: {
+      email: "alice@prisma.io",
+      name: "Alice",
+      password: "password123",
       posts: {
         create: {
-          title: 'Check out Prisma with Next.js',
-          content: 'https://www.prisma.io/nextjs',
+          title: "Check out Prisma with Next.js",
+          content: "https://www.prisma.io/nextjs",
         },
       },
     },
-  })
+  });
+
   const bob = await prisma.user.upsert({
-    where: { email: 'bob@prisma.io' },
+    where: { email: "bob@prisma.io" },
     update: {},
     create: {
-      email: 'bob@prisma.io',
-      name: 'Bob',
+      email: "bob@prisma.io",
+      name: "Bob",
+      password: "password123",
       posts: {
         create: [
           {
-            title: 'Follow Prisma on Twitter',
-            content: 'https://twitter.com/prisma',
+            title: "Follow Prisma on Twitter",
+            content: "https://twitter.com/prisma",
           },
           {
-            title: 'Follow Nexus on Twitter',
-            content: 'https://twitter.com/nexusgql',
+            title: "Follow Nexus on Twitter",
+            content: "https://twitter.com/nexusgql",
           },
         ],
       },
     },
-  })
+  });
 
+  // --- PAGES ---
   const homePage = await prisma.page.upsert({
-    where: { slug: 'home' },
+    where: { slug: "home" },
     update: {},
     create: {
-      title: 'Homepage',
-      slug: 'home',
-      components: {
-
-      },
+      title: "Homepage",
+      slug: "home",
     },
   });
 
   const aboutPage = await prisma.page.upsert({
-    where: { slug: 'over-ons' },
+    where: { slug: "over-ons" },
     update: {},
     create: {
-      title: 'Over Ons',
-      slug: 'over-ons',
-      components: {
-
-      }
+      title: "Over Ons",
+      slug: "over-ons",
     },
   });
 
   const testPage = await prisma.page.upsert({
-    where: { slug: 'test-page' },
+    where: { slug: "test-page" },
     update: {},
     create: {
-      title: 'Test Page',
-      slug: 'test-page',
-      components: {
+      title: "Test Page",
+      slug: "test-page",
+    },
+  });
 
+  // --- CONNECT COMPONENT TO PAGES ---
+  await prisma.page.update({
+    where: { id: homePage.id },
+    data: {
+      components: {
+        connect: { id: headerComponent.id },
       },
     },
   });
@@ -93,23 +110,15 @@ async function main() {
     },
   });
 
-  await prisma.page.update({
-    where: { id: homePage.id },
-    data: {
-      components: {
-        connect: { id: headerComponent.id },
-      },
-    },
-  });
-
+  // --- SHOP ITEMS ---
   const tShirt = await prisma.shopItem.upsert({
     where: { id: 1 },
     update: {},
     create: {
-      title: 'Cool T-Shirt',
+      title: "Cool T-Shirt",
       price: 24.99,
-      description: 'Een zeer cool T-shirt gemaakt van 100% biologisch katoen.',
-      shortDesc: 'Biologisch katoenen T-shirt.',
+      description: "Een zeer cool T-shirt gemaakt van 100% biologisch katoen.",
+      shortDesc: "Biologisch katoenen T-shirt.",
       images: [],
       sale: 0.1,
       stock: 50,
@@ -120,31 +129,31 @@ async function main() {
     where: { id: 2 },
     update: {},
     create: {
-      title: 'Vintage Poster',
-      price: 15.00,
-      description: 'Een prachtige poster van een klassieke film.',
-      shortDesc: 'Klassieke filmposter.',
+      title: "Vintage Poster",
+      price: 15.0,
+      description: "Een prachtige poster van een klassieke film.",
+      shortDesc: "Klassieke filmposter.",
       images: [],
       sale: 0,
       stock: 20,
     },
   });
 
-  // --- Artiesten (Artist) ---
+  // --- ARTISTS ---
   const artistA = await prisma.artist.create({
     data: {
-      name: 'Lena van Vliet',
-      description: 'Een abstracte kunstenaar bekend om haar levendige kleuren.',
-      shortDesc: 'Abstracte kunstenaar.',
+      name: "Lena van Vliet",
+      description: "Een abstracte kunstenaar bekend om haar levendige kleuren.",
+      shortDesc: "Abstracte kunstenaar.",
       images: [],
     },
   });
 
   const artistB = await prisma.artist.create({
     data: {
-      name: 'Max de Vries',
-      description: 'Fotograaf gespecialiseerd in landschapsfotografie.',
-      shortDesc: 'Landschapsfotograaf.',
+      name: "Max de Vries",
+      description: "Fotograaf gespecialiseerd in landschapsfotografie.",
+      shortDesc: "Landschapsfotograaf.",
       images: [],
     },
   });
@@ -154,18 +163,20 @@ async function main() {
     bob,
     homePage,
     aboutPage,
+    testPage,
     tShirt,
     poster,
     artistA,
     artistB,
-  })
+  });
 }
+
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

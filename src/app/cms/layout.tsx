@@ -1,7 +1,12 @@
+import { isLoggedin } from "@/src/lib/auth";
 import { prisma } from "@/src/lib/prisma";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function CmsLayout({ children }: React.PropsWithChildren) {
+  if (!(await isLoggedin())) {
+    redirect("/login");
+  }
 
   const pages = await prisma.page.findMany();
 

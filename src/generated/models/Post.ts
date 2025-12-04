@@ -28,26 +28,24 @@ export type AggregatePost = {
 
 export type PostAvgAggregateOutputType = {
   id: number | null
-  authorId: number | null
 }
 
 export type PostSumAggregateOutputType = {
   id: number | null
-  authorId: number | null
 }
 
 export type PostMinAggregateOutputType = {
   id: number | null
   title: string | null
   content: string | null
-  authorId: number | null
+  authorId: string | null
 }
 
 export type PostMaxAggregateOutputType = {
   id: number | null
   title: string | null
   content: string | null
-  authorId: number | null
+  authorId: string | null
 }
 
 export type PostCountAggregateOutputType = {
@@ -61,12 +59,10 @@ export type PostCountAggregateOutputType = {
 
 export type PostAvgAggregateInputType = {
   id?: true
-  authorId?: true
 }
 
 export type PostSumAggregateInputType = {
   id?: true
-  authorId?: true
 }
 
 export type PostMinAggregateInputType = {
@@ -181,7 +177,7 @@ export type PostGroupByOutputType = {
   id: number
   title: string
   content: string
-  authorId: number
+  authorId: string
   _count: PostCountAggregateOutputType | null
   _avg: PostAvgAggregateOutputType | null
   _sum: PostSumAggregateOutputType | null
@@ -211,7 +207,7 @@ export type PostWhereInput = {
   id?: Prisma.IntFilter<"Post"> | number
   title?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringFilter<"Post"> | string
-  authorId?: Prisma.IntFilter<"Post"> | number
+  authorId?: Prisma.StringFilter<"Post"> | string
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -230,7 +226,7 @@ export type PostWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PostWhereInput | Prisma.PostWhereInput[]
   title?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringFilter<"Post"> | string
-  authorId?: Prisma.IntFilter<"Post"> | number
+  authorId?: Prisma.StringFilter<"Post"> | string
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
@@ -253,7 +249,7 @@ export type PostScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Post"> | number
   title?: Prisma.StringWithAggregatesFilter<"Post"> | string
   content?: Prisma.StringWithAggregatesFilter<"Post"> | string
-  authorId?: Prisma.IntWithAggregatesFilter<"Post"> | number
+  authorId?: Prisma.StringWithAggregatesFilter<"Post"> | string
 }
 
 export type PostCreateInput = {
@@ -266,7 +262,7 @@ export type PostUncheckedCreateInput = {
   id?: number
   title: string
   content: string
-  authorId: number
+  authorId: string
 }
 
 export type PostUpdateInput = {
@@ -279,14 +275,14 @@ export type PostUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PostCreateManyInput = {
   id?: number
   title: string
   content: string
-  authorId: number
+  authorId: string
 }
 
 export type PostUpdateManyMutationInput = {
@@ -298,7 +294,7 @@ export type PostUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type PostListRelationFilter = {
@@ -320,7 +316,6 @@ export type PostCountOrderByAggregateInput = {
 
 export type PostAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  authorId?: Prisma.SortOrder
 }
 
 export type PostMaxOrderByAggregateInput = {
@@ -339,7 +334,6 @@ export type PostMinOrderByAggregateInput = {
 
 export type PostSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  authorId?: Prisma.SortOrder
 }
 
 export type PostCreateNestedManyWithoutAuthorInput = {
@@ -428,7 +422,7 @@ export type PostScalarWhereInput = {
   id?: Prisma.IntFilter<"Post"> | number
   title?: Prisma.StringFilter<"Post"> | string
   content?: Prisma.StringFilter<"Post"> | string
-  authorId?: Prisma.IntFilter<"Post"> | number
+  authorId?: Prisma.StringFilter<"Post"> | string
 }
 
 export type PostCreateManyAuthorInput = {
@@ -507,7 +501,7 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: number
     title: string
     content: string
-    authorId: number
+    authorId: string
   }, ExtArgs["result"]["post"]>
   composites: {}
 }
@@ -935,7 +929,7 @@ export interface PostFieldRefs {
   readonly id: Prisma.FieldRef<"Post", 'Int'>
   readonly title: Prisma.FieldRef<"Post", 'String'>
   readonly content: Prisma.FieldRef<"Post", 'String'>
-  readonly authorId: Prisma.FieldRef<"Post", 'Int'>
+  readonly authorId: Prisma.FieldRef<"Post", 'String'>
 }
     
 
