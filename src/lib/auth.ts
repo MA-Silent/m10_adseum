@@ -16,7 +16,7 @@ export async function isLoggedin(): Promise<boolean>{
     jwt.verify(authToken.value, process.env.JWT_SECRET!);
     return true
   }
-  catch (err) {
+  catch {
     return false;
   }
 }
@@ -39,7 +39,7 @@ export async function registerUser(email: string, password: string, username: st
 
 }
 
-export async function createSession(email: string, password: string): Promise<string> {
+export async function createSession(email: string, password: string): Promise<string[]> {
   const user = await prisma.user.findUnique({
     where: {
       email: email,
@@ -47,8 +47,12 @@ export async function createSession(email: string, password: string): Promise<st
   });
 
   if (user == null || !(await bcrypt.compare(password, user.password))) {
-    return "Incorrect email or password!";
+    const array: string[] = [];
+
+    array[2] = "Wrong username or password";
+
+    return array
   }
 
-  return jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: "15min" })
+  return [jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: "15min" }), jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {expiresIn: "7d"})]
 }

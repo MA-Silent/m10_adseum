@@ -9,7 +9,7 @@ export default async function Header() {
   return(
     <>
       <header className="w-full text-secondary">
-        <div className="bg-black/60 w-full p-4 justify-between flex">
+        <div className="bg-sidebar-accent text-sidebar-accent-foreground w-full p-4 justify-between flex">
           <h1>{t('title')}</h1>
           <nav className="flex gap-5">
             {pages.map((page)=>{

@@ -14,7 +14,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

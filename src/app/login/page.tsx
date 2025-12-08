@@ -10,19 +10,29 @@ const loginSchema = z.object({
 })
 
 const formAction = async (_: ActionReturn, formData: FormData): Promise<ActionReturn> => {
-  "use server";
+  "use server"
 
   const { data, success, error } = loginSchema.safeParse(Object.fromEntries(formData));
 
   if(success){
-    const token = await createSession(data.email, data.password)
+    const [authToken, refreshToken, error] = await createSession(data.email, data.password)
+
+    if(error){
+      throw new Error(error);
+    }
 
     const cooky = await cookies();
 
-    cooky.set("authToken", token, {
+    cooky.set("authToken", authToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
+    })
+
+    cooky.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict"
     })
 
     redirect('/cms/')
