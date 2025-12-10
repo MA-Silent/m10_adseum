@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { prisma } from "./prisma";
 import { revalidatePath } from "next/cache";
+import { isLoggedin } from "./auth";
 
 export async function getAvailableComponents(): Promise<string[]> {
   const fsRead = fs.readdirSync(path.join(process.cwd(), "src/components"));
@@ -20,12 +21,10 @@ export async function getAvailableComponents(): Promise<string[]> {
 }
 
 export async function addComponentToPage(componentFile: string, slug: string){
-  const comp = await prisma.component.upsert({
-    where: {
-      importPath: componentFile
-    },
-    update: {},
-    create: {
+  if (!await isLoggedin()) return;
+
+  const comp = await prisma.component.create({
+    data: {
       importPath: componentFile,
       nameComponent: componentFile
     }

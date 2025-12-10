@@ -212,13 +212,13 @@ export type ComponentOrderByWithRelationInput = {
 
 export type ComponentWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  importPath?: string
-  nameComponent?: string
   AND?: Prisma.ComponentWhereInput | Prisma.ComponentWhereInput[]
   OR?: Prisma.ComponentWhereInput[]
   NOT?: Prisma.ComponentWhereInput | Prisma.ComponentWhereInput[]
+  importPath?: Prisma.StringFilter<"Component"> | string
+  nameComponent?: Prisma.StringFilter<"Component"> | string
   pages?: Prisma.PageListRelationFilter
-}, "id" | "importPath" | "nameComponent">
+}, "id" | "id">
 
 export type ComponentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

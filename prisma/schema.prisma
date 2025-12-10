@@ -53,9 +53,9 @@ model Artist {
 }
 
 model Component {
-  id Int @id @default(autoincrement())
-  importPath String @unique
-  nameComponent String @unique
+  id Int @id @unique @default(autoincrement())
+  importPath String
+  nameComponent String
   pages Page[]
 }
 

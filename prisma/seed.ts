@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   // --- COMPONENT ---
   const headerComponent = await prisma.component.upsert({
-    where: { importPath: "Header" },
+    where: { id: 2 },
     update: {},
     create: {
       importPath: "Header",
