@@ -22,7 +22,7 @@ export default async function CmsPage({ params }: { params: Promise<{ page: stri
         })}
 
         <CmsAddButton>
-          <ul className="fixed right-0 top-0 p-4 flex flex-col gap-2 max-w-36 bg-yellow-500">
+          <ul className="fixed right-0 top-0 p-4 flex flex-col gap-2 max-w-36 bg-yellow-500 z-100">
             {availableComponents.map((component, index) => (
               <li className="block" key={index}>
                 <button className="p-1 bg-red-500 cursor-pointer w-full text-left" onClick={async () => {

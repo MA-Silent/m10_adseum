@@ -40,6 +40,6 @@ async function onClick(comp: Comp, pageID: number){
 export default async function CmsRemoveButton({ component, pageID }: {component : Comp, pageID: number}){
 
   return(
-    <button onClick={onClick.bind(undefined, component, pageID)} className="absolute top-0 right-0 size-6 bg-red-500/40 text-white z-100"><Minus className="size-6" /></button>
+    <button onClick={onClick.bind(undefined, component, pageID)} className="absolute top-0 right-0 size-6 bg-red-500/40 text-white z-40"><Minus className="size-6" /></button>
   )
 }
