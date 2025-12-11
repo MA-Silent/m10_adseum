@@ -31,7 +31,6 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
                 return (
                   <React.Fragment key={page.id}>
                     <Link href={`/cms/${page.slug}`} className="cursor-pointer w-full text-foreground/80 hover:text-white  font-normal text-lg" > {page.title} </Link>
-                    {/*<Separator className="bg-foreground mb-4 mt-1" />*/}
                     {index !== pages.length - 1 && <div className="w-full h-px bg-current/20"/>}
                   </React.Fragment>
                 )

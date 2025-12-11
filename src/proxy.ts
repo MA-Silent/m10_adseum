@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isLoggedin } from "./lib/auth";
 import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 import { prisma } from "./lib/prisma";
 
 type DecodedRefeshToken = {

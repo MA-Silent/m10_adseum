@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { getRequestConfig } from 'next-intl/server';
 import fs from "fs";
 import path from "path";
@@ -11,15 +12,24 @@ export default getRequestConfig(async () => {
     locales.push(loc.slice(0, 2));
   });
 
+  let locale = "en";
+
   const header = await headers();
-  const accept = header.get("accept-language") || "";
+  const cookie = await cookies();
 
-  const candidates = accept
-    .split(',')
-    .map(l => l.trim().slice(0, 2))
-    .filter(l => /^[a-z]{2}$/.test(l));
+  if ( cookie.has('x-lang') ) {
+    locale = cookie.get('x-lang')!.value;
+  } else {
+    const accept = header.get("accept-language") || "";
 
-  const locale = candidates.find(c => locales.includes(c)) || "en";
+    const candidates = accept
+      .split(',')
+      .map(l => l.trim().slice(0, 2))
+      .filter(l => /^[a-z]{2}$/.test(l));
+
+      locale = candidates.find(c => locales.includes(c)) || "en";
+  }
+
 
   return {
     locale,
