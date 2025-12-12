@@ -1,11 +1,11 @@
 import { getTranslations } from "next-intl/server";
-import { prisma } from "../lib/prisma";
 import Link from "next/link";
 import { CmsComponent } from "./componentType";
+import { getPages } from "../lib/pages";
 
 const Header: CmsComponent = async function ({ children, style }) {
   const t = await getTranslations('Header');
-  const pages = await prisma.page.findMany();
+  const pages = await getPages();
 
    return(
      <>

@@ -5,6 +5,8 @@ import path from "path";
 import { prisma } from "./prisma";
 import { revalidatePath } from "next/cache";
 import { isLoggedin } from "./auth";
+import { unstable_cache } from "next/cache";
+
 
 export async function getAvailableComponents(): Promise<string[]> {
   const fsRead = fs.readdirSync(path.join(process.cwd(), "src/components"));
@@ -20,7 +22,7 @@ export async function getAvailableComponents(): Promise<string[]> {
   return result;
 }
 
-export async function addComponentToPage(componentFile: string, slug: string, order?: number){
+export async function addComponentToPage(componentFile: string, slug: string, order?: number) {
   if (!await isLoggedin()) return;
 
   let comp;
