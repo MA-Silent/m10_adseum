@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { prisma } from "./prisma";
 import { cookies } from "next/headers";
 import { Prisma } from "../generated/client";
+import { randomUUID } from "crypto";
 
 export async function isLoggedin(): Promise<boolean>{
   const clientCookies = cookies();
@@ -54,5 +55,20 @@ export async function createSession(email: string, password: string): Promise<st
     return array
   }
 
-  return [jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: "15min" }), jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {expiresIn: "7d"})]
+  const uuid = randomUUID();
+
+  const session = await prisma.session.upsert({
+    where: {
+      userId: user.id,
+    },
+    update: {
+      token: await bcrypt.hash(uuid, 10)
+    },
+    create: {
+      userId: user.id,
+      token: await bcrypt.hash(uuid, 10)
+    }
+  })
+
+  return [jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: "15min" }), jwt.sign({ sessionToken: uuid, sessionID: session.id }, process.env.JWT_SECRET!, {expiresIn: "7d"})]
 }

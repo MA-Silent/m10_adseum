@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { isLoggedin } from "./lib/auth";
 import jwt from "jsonwebtoken";
 import { prisma } from "./lib/prisma";
+import * as bcrypt from "bcrypt"
 
 type DecodedRefeshToken = {
-  userId: string,
+  sessionToken: string,
+  sessionID: number,
   iat: number,
   exp: number
 }
@@ -14,20 +16,24 @@ export async function proxy(req: NextRequest) {
   if(!(await isLoggedin())){
     const cooky = response.cookies;
 
-    const refreshToken = req.cookies.get("refreshToken");
-    if (!refreshToken) return;
+    const refreshCookie = req.cookies.get("refreshToken");
+    if (!refreshCookie) return;
 
     try {
-      const refeshToken = jwt.verify(refreshToken.value, process.env.JWT_SECRET!) as DecodedRefeshToken;
-      const user = await prisma.user.findUnique({
+      const refreshToken = jwt.verify(refreshCookie.value, process.env.JWT_SECRET!) as DecodedRefeshToken;
+      const session = await prisma.session.findUnique({
         where:{
-          id: refeshToken.userId
+          id: refreshToken.sessionID
         }
       })
 
-      if (!user) return;
+      if (!session) return;
 
-      const authToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: "15min" });
+      if(!await bcrypt.compare(refreshToken.sessionToken, session.token)){
+        return;
+      }
+
+      const authToken = jwt.sign({ userId: session.userId }, process.env.JWT_SECRET!, { expiresIn: "15min" });
       cooky.set("authToken",authToken,{
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",

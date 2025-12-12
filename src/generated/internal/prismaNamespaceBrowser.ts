@@ -134,7 +134,8 @@ export type ArtistScalarFieldEnum = (typeof ArtistScalarFieldEnum)[keyof typeof 
 export const ComponentScalarFieldEnum = {
   id: 'id',
   importPath: 'importPath',
-  nameComponent: 'nameComponent'
+  nameComponent: 'nameComponent',
+  order: 'order'
 } as const
 
 export type ComponentScalarFieldEnum = (typeof ComponentScalarFieldEnum)[keyof typeof ComponentScalarFieldEnum]

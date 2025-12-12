@@ -55,6 +55,7 @@ model Component {
   id Int @id @unique @default(autoincrement())
   importPath String
   nameComponent String
+  order Int @default(0)
   pages Page[]
 }
 

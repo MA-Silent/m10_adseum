@@ -2,6 +2,8 @@ import "dotenv/config"
 import { PrismaClient } from "@/src/generated/client";
 import { PrismaPg } from "@prisma/adapter-pg"
 import * as bcrypt from "bcrypt";
+import { uuid } from "zod";
+import { randomUUID } from "crypto";
 
 if (!process.env.DATABASE_URL) {
   throw new Error("Missing DATABASE_URL");
@@ -28,7 +30,7 @@ async function main() {
     create: {
       email: "admin@admin.admin",
       name: "admin",
-      password: (await bcrypt.hash("admin", 10))
+      password: (await bcrypt.hash("admin", 10)),
     }
   })
 

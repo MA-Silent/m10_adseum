@@ -18,7 +18,7 @@ export default async function CmsPage({ params }: { params: Promise<{ page: stri
       <div className="h-full w-full relative pt-0 shadow-[0_0_1rem_1rem_#00000044] rounded">
         {components?.map(async (comp, index)=>{
           const Component = (await import(`@/src/components/${comp.importPath}`)).default as CmsComponent;
-          return <Component key={index}><CmsRemoveButton component={comp} pageID={page.id} /></Component>
+          return <Component style={{order: comp.order}} key={index}><CmsRemoveButton component={comp} pageID={page.id} /></Component>
         })}
 
         <CmsAddButton>

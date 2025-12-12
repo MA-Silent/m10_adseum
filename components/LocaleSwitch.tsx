@@ -1,4 +1,4 @@
-import { CmsComponent } from "../src/components/componentType";
+import { CmsComponent } from "@/src/components/componentType";
 import { cookies as getCookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 

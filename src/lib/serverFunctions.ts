@@ -20,15 +20,28 @@ export async function getAvailableComponents(): Promise<string[]> {
   return result;
 }
 
-export async function addComponentToPage(componentFile: string, slug: string){
+export async function addComponentToPage(componentFile: string, slug: string, order?: number){
   if (!await isLoggedin()) return;
 
-  const comp = await prisma.component.create({
-    data: {
-      importPath: componentFile,
-      nameComponent: componentFile
-    }
-  })
+  let comp;
+
+  if(order){
+    comp = await prisma.component.create({
+      data: {
+        importPath: componentFile,
+        nameComponent: componentFile,
+        order: order
+      }
+    })
+  }
+  else {
+    comp = await prisma.component.create({
+      data: {
+        importPath: componentFile,
+        nameComponent: componentFile
+      }
+    })
+  }
 
   await prisma.page.update({
     where: { slug: slug },
