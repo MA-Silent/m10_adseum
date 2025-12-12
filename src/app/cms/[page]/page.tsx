@@ -3,6 +3,8 @@ import { getAvailableComponents, addComponentToPage } from "@/src/lib/serverFunc
 import CmsAddButton from "../CmsAddButton";
 import { CmsComponent } from "@/src/components/componentType";
 import CmsRemoveButton from "../CmsRemoveButton";
+import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export default async function CmsPage({ params }: { params: Promise<{ page: string }> }) {
   const slug = (await params).page;
@@ -28,6 +30,7 @@ export default async function CmsPage({ params }: { params: Promise<{ page: stri
                 <button className="p-1 bg-red-500 cursor-pointer w-full text-left" onClick={async () => {
                   "use server";
                   await addComponentToPage(component, slug);
+                  revalidateTag(`page:${page.slug}`, 'max')
                 }}>{component}</button>
               </li>
             ))}

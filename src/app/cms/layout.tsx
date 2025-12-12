@@ -18,10 +18,6 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
         <div className="w-full h-16 flex">
           <div className="size-full items-center justify-center flex">Logo</div>
         </div>
-        {pages.map((page) => {
-          return <div key={page.id}></div>
-          //return <Link href={`/cms/${page.slug}`} className="cursor-pointer w-full p-2 border-b text-foreground border-foreground font-semibold" key={page.id}> {page.title} </Link>
-        })}
 
         <ScrollArea className="max-h-96 w-full border rounded border-foreground/20">
           <div className="p-4">

@@ -3,6 +3,7 @@ import { Minus } from "lucide-react"
 import { prisma } from "@/src/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { isLoggedin } from "@/src/lib/auth";
+import { revalidateTag } from "next/cache";
 
 type Comp = {
     id: number;
@@ -32,7 +33,7 @@ async function onClick(comp: Comp, pageID: number){
         }
       });
     }
-
+    revalidateTag(`page${page.slug}`, 'max')
   }
   revalidatePath('/cms');
 }
