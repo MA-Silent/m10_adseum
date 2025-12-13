@@ -18,7 +18,7 @@ const formAction = async (_: ActionReturn, formData: FormData): Promise<ActionRe
     const [authToken, refreshToken, error] = await createSession(data.email, data.password)
 
     if(error){
-      throw new Error(error);
+      return error;
     }
 
     const cooky = await cookies();

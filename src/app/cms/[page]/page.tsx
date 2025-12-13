@@ -2,8 +2,7 @@ import { prisma } from "@/src/lib/prisma";
 import { getAvailableComponents, addComponentToPage } from "@/src/lib/serverFunctions";
 import CmsAddButton from "../CmsAddButton";
 import { CmsComponent } from "@/src/components/componentType";
-import CmsRemoveButton from "../CmsRemoveButton";
-import { revalidatePath } from "next/cache";
+import CmsRemoveButton from "../CmsComponentBar";
 import { revalidateTag } from "next/cache";
 
 export default async function CmsPage({ params }: { params: Promise<{ page: string }> }) {
@@ -17,7 +16,7 @@ export default async function CmsPage({ params }: { params: Promise<{ page: stri
 
   return (
     <div className="h-full w-full p-6 pb-0">
-      <div className="h-full w-full relative pt-0 shadow-[0_0_1rem_1rem_#00000044] rounded">
+      <div className="h-full w-full flex flex-col pt-0 shadow-[0_0_1rem_1rem_#00000044] rounded">
         {components?.map(async (comp, index)=>{
           const Component = (await import(`@/src/components/${comp.importPath}`)).default as CmsComponent;
           return <Component style={{order: comp.order}} key={index}><CmsRemoveButton component={comp} pageID={page.id} /></Component>

@@ -5,7 +5,6 @@ import path from "path";
 import { prisma } from "./prisma";
 import { revalidatePath } from "next/cache";
 import { isLoggedin } from "./auth";
-import { unstable_cache } from "next/cache";
 
 
 export async function getAvailableComponents(): Promise<string[]> {

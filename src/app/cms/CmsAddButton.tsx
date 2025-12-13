@@ -9,7 +9,7 @@ export default function CmsAddButton({ children }: CmsAddButton) {
 
     return (
         <>
-            <button className="bg-blue-500 block" onClick={() => setOpen(x => !x)}>Add components</button>
+        <button className="bg-blue-500 block" style={{ order: 999999999}} onClick={() => setOpen(x => !x)}>Add components</button>
             {open && children}
         </>
     );
