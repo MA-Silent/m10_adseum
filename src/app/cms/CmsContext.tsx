@@ -9,7 +9,7 @@ type CmsContextType = {
 
 const CmsContext = createContext<CmsContextType | null>(null);
 
-export function CmsProvider({ children }: { children: ReactNode }) {
+export function CmsProvider({ children, page_slug }: { children: ReactNode, page_slug: string }) {
   const [actions, setActions] = useState<CmsAction[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string>();
@@ -36,7 +36,7 @@ export function CmsProvider({ children }: { children: ReactNode }) {
   async function handleSave() {
     setSaving(true);
 
-    if( await executeActions(actions) ){
+    if( await executeActions(actions, page_slug) ){
       setActions([]);
       setSaving(false);
     } else {

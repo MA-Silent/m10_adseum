@@ -16,7 +16,7 @@ export default async function CmsPage({ params }: { params: Promise<{ page: stri
   const availableComponents = await getAvailableComponents();
 
   return (
-    <CmsProvider>
+    <CmsProvider page_slug={page.slug}>
       <div className="h-full w-full p-6 pb-0">
         <div className="h-full w-full flex flex-col pt-0 shadow-[0_0_1rem_1rem_#00000044] rounded">
           {components?.map(async (comp, index)=>{

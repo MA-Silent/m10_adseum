@@ -3,7 +3,7 @@
 import fs from "fs";
 import path from "path";
 import { prisma } from "./prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { isLoggedin } from "./auth";
 
 type MoveAction = {
@@ -21,6 +21,12 @@ export type Comp = {
     id: number;
     importPath: string;
     nameComponent: string;
+}
+
+export type Page = {
+   id: number;
+   slug: string;
+   title: string;
 }
 
 export type CmsAction = MoveAction | RemoveAction;
@@ -75,7 +81,7 @@ export async function addComponentToPage(componentFile: string, slug: string, or
   revalidatePath('/cms');
 }
 
-export async function executeActions(actions: CmsAction[]): Promise<boolean>{
+export async function executeActions(actions: CmsAction[], pageSlug: string): Promise<boolean>{
   if (!await isLoggedin()) return false;
 
   try {
@@ -100,6 +106,7 @@ export async function executeActions(actions: CmsAction[]): Promise<boolean>{
         })
       }
     });
+    revalidateTag(`page:${pageSlug}`, 'max')
     revalidatePath('/cms');
     return true;
   } catch {
