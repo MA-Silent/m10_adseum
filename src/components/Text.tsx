@@ -1,12 +1,13 @@
 import { useTranslations } from "next-intl";
 import { CmsComponent } from "./componentType";
 
-const Text: CmsComponent = function ({children, style}) {
+const Text: CmsComponent = function ({children, id, style}) {
   const t = useTranslations('Homepage')
   const number = 3;
 
   return (
     <div
+      id={id}
       className="relative w-full grid sm:grid-cols-(--length) not-sm:grid-rows-(--length) not-sm:gap-5 justify-items-center"
       style={ {...style, "--length": `repeat(${number},minmax(0,1fr))` } as React.CSSProperties}
     >

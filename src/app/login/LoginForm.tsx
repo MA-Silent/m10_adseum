@@ -18,7 +18,7 @@ type LoginFormProps = {
 }
 
 export default function LoginForm({ action }: LoginFormProps){
-  const [state, formAction, isPending] = useActionState(action, undefined);
+  const [error, formAction, isPending] = useActionState(action, undefined);
   return (
     <>
       <form className="max-w-sm w-full" action={formAction} >
@@ -33,7 +33,7 @@ export default function LoginForm({ action }: LoginFormProps){
               <Input id="password" type="password" name="password" placeholder="••••••••" />
             </Field>
             <Field>
-              <FieldError>{state}</FieldError>
+              <FieldError>{error}</FieldError>
               <Button>Submit</Button>
             </Field>
           </FieldGroup>

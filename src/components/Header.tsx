@@ -3,13 +3,13 @@ import Link from "next/link";
 import { CmsComponent } from "./componentType";
 import { getPages } from "../lib/pages";
 
-const Header: CmsComponent = async function ({ children, style }) {
+const Header: CmsComponent = async function ({ children, id, style }) {
   const t = await getTranslations('Header');
   const pages = await getPages();
 
    return(
      <>
-       <header className="relative w-full text-secondary" style={style}>
+       <header className="relative w-full text-secondary" id={id} style={style}>
          <div className="bg-sidebar-accent text-sidebar-accent-foreground w-full p-4 justify-between flex">
            <h1>{t('title')}</h1>
            <nav className="flex gap-5">
