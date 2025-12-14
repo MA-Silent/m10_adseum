@@ -1,7 +1,8 @@
 import { CSSProperties } from "react";
 
 type PropsWithRequiredChildren<P = {}> = P & {
-  children: React.ReactNode;
+  children: React.ReactNode
+  id: string
   style?: CSSProperties
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { executeActions, type CmsAction } from "@/src/lib/serverFunctions";
 
 type CmsContextType = {
@@ -12,7 +12,22 @@ const CmsContext = createContext<CmsContextType | null>(null);
 export function CmsProvider({ children }: { children: ReactNode }) {
   const [actions, setActions] = useState<CmsAction[]>([]);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string>()
+  const [error, setError] = useState<string>();
+
+  useEffect(()=>{
+    actions.forEach((action)=>{
+      if(action.type === "move"){
+        const domComponent = document.getElementById(`component:${action.component.id}`)!;
+
+        domComponent.style.order = `${parseInt(domComponent.style.order) + action.amount}`
+      }
+      if(action.type === "remove") {
+        const domComponent = document.getElementById(`component:${action.component.id}`)!;
+
+        domComponent.style.display = 'none';
+      }
+    })
+  },[actions])
 
   const addAction = (action: CmsAction) => {
     setActions((prev) => [...prev, action]);
