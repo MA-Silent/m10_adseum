@@ -1,10 +1,10 @@
 import { prisma } from "@/src/lib/prisma";
 import { getAvailableComponents, addComponentToPage } from "@/src/lib/serverFunctions";
 import { revalidateTag } from "next/cache";
-import CmsAddButton from "../CmsAddButton";
+import CmsAddButton from "../cmsComponents/CmsAddButton";
 import { CmsComponent } from "@/src/components/componentType";
-import CmsComponentBar from "../CmsComponentBar";
-import { CmsProvider } from "../CmsContext";
+import CmsComponentBar from "../cmsComponents/CmsComponentBar";
+import { CmsProvider } from "../cmsComponents/CmsContext";
 
 export default async function CmsPage({ params }: { params: Promise<{ page: string }> }) {
   const slug = (await params).page;
