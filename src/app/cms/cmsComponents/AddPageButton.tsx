@@ -22,8 +22,6 @@ function formatSlug(name: string){
     .replace(/-+/g, '-')
 }
 
-
-
 export default function AddPageButton({ action }: AddPageFormProps) {
   const [name, setName] = useState("New Page");
   const [error, formAction, isPending] = useActionState(action, undefined);
