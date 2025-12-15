@@ -85,30 +85,54 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
   if (!await isLoggedin()) return false;
 
   try {
-    actions.forEach(async (action) => {
-      if (action.type == "move") {
-        await prisma.component.update({
-          where: {
-            id: action.component.id
-          },
-          data: {
-            order: {
-              increment: action.amount
+    let last: CmsAction | undefined;
+    let moveAmount = 0;
+
+    for(const action of actions){
+      if (last?.component.id == action.component.id){
+        if (action.type == 'move'){
+          moveAmount += action.amount;
+        }
+      } else {
+        if(last?.component && moveAmount !== 0){
+          await prisma.component.update({
+            where: {
+              id: last.component.id,
+            },
+            data:{
+              order: {
+                increment: moveAmount
+              }
             }
-          }
-        })
+          })
+        }
+        moveAmount = action.type === 'move' ? action.amount : 0;
       }
-      if (action.type == "remove") {
+
+      if(action.type === 'remove'){
         await prisma.component.delete({
-          where: {
-            id: action.component.id
-          }
+          where: { id: action.component.id }
         })
       }
-    });
+
+      last = action;
+    }
+
+    if(last?.component && moveAmount !== 0){
+      await prisma.component.update({
+        where: { id: last.component.id },
+        data: {
+          order: {
+            increment: moveAmount,
+          }
+        }
+      })
+    }
+
     revalidateTag(`page:${pageSlug}`, 'max')
     revalidatePath('/cms');
     return true;
+
   } catch {
     revalidatePath('/cms');
     return false;
