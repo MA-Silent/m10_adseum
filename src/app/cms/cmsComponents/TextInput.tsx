@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCms } from "./CmsContext";
 import { CmsComponent } from "../../../components/componentType";
 import { useTranslations } from "next-intl";
@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 const TextInput: CmsComponent = ({children, id, style}) => {
   const [content, setContent] = useState("");
   const { addAction } = useCms();
+  const ref = useRef(null)
   const componentInfo = id.split(':');
   const componentID: number = parseInt(componentInfo[1].replace(/-(.*)/gi, ''));
 
@@ -20,11 +21,18 @@ const TextInput: CmsComponent = ({children, id, style}) => {
     text = "Please enter text here";
   }
 
+  useEffect(()=>{
+    if (!ref.current) return;
+    const element: HTMLTextAreaElement = ref.current;
+
+    element.style.height = element.scrollHeight + 'px';
+  },[ref])
+
   return (
-    <div className="relative w-full" id={id} style={style}>
+    <div className="relative size-fit w-full" id={id} style={style}>
       {children}
         <form className="size-full" onSubmit={(e) => { e.preventDefault(); addAction({ type: 'InsertText', key: id, componentID: componentID ,contentEN: content }) }}>
-          <textarea name="Text" id="" placeholder="Insert text here" className="size-full resize-none" onChange={(e) => setContent(e.currentTarget.value)} defaultValue={text}></textarea>
+        <textarea name="Text" ref={ref} placeholder="Insert text here" className="size-full resize-none min-h-[1em]" onInput={(e)=>{e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px'}} onChange={(e) => setContent(e.currentTarget.value)} defaultValue={text}></textarea>
           {content && content != text && <button type="submit" className="bg-chart-2">Done</button>}
         </form>
     </div>
