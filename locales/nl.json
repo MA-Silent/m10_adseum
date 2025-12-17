@@ -4,6 +4,8 @@
   },
 
   "Header": {
-    "title" : "Header Title"
-  }
+    "title": "Header Title"
+  },
+
+  "components": {}
 }

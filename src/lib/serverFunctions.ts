@@ -8,19 +8,26 @@ import { isLoggedin } from "./auth";
 
 type MoveAction = {
   type: "move"
-  component: Comp,
+  componentID: number,
   amount: number
 }
 
 type RemoveAction = {
   type: "remove",
-  component: Comp
+  componentID: number
+}
+
+type InsertTextAction = {
+  type: "InsertText"
+  key: string
+  componentID: number
+  contentEN: string
 }
 
 export type Comp = {
-    id: number;
-    importPath: string;
-    nameComponent: string;
+  id: number;
+  importPath: string;
+  nameComponent: string;
 }
 
 export type Page = {
@@ -29,8 +36,11 @@ export type Page = {
    title: string;
 }
 
-export type CmsAction = MoveAction | RemoveAction;
+type LocaleFile = {
+  components: Record<string, {content:string}>
+}
 
+export type CmsAction = MoveAction | RemoveAction | InsertTextAction;
 
 export async function getAvailableComponents(): Promise<string[]> {
   const fsRead = fs.readdirSync(path.join(process.cwd(), "src/components"));
@@ -89,15 +99,15 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
     let moveAmount = 0;
 
     for(const action of actions){
-      if (last?.component.id == action.component.id){
+      if (last?.componentID == action.componentID){
         if (action.type == 'move'){
           moveAmount += action.amount;
         }
       } else {
-        if(last?.component && moveAmount !== 0){
+        if(last?.componentID && moveAmount !== 0){
           await prisma.component.update({
             where: {
-              id: last.component.id,
+              id: last.componentID,
             },
             data:{
               order: {
@@ -111,16 +121,30 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
 
       if(action.type === 'remove'){
         await prisma.component.delete({
-          where: { id: action.component.id }
+          where: { id: action.componentID }
         })
+      }
+
+      if(action.type == 'InsertText'){
+        const resolvedPath = path.resolve(process.cwd(), "locales/en.json");
+
+        const LocaleFile: LocaleFile = JSON.parse(fs.readFileSync(resolvedPath, {encoding: 'utf-8'}));
+
+        const key = action.key
+
+        LocaleFile.components[key] ??= {content: ""}
+
+        LocaleFile.components[key].content = action.contentEN;
+
+        fs.writeFileSync(resolvedPath, JSON.stringify(LocaleFile))
       }
 
       last = action;
     }
 
-    if(last?.component && moveAmount !== 0){
+    if(last?.componentID && moveAmount !== 0){
       await prisma.component.update({
-        where: { id: last.component.id },
+        where: { id: last.componentID },
         data: {
           order: {
             increment: moveAmount,

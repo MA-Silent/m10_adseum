@@ -9,7 +9,7 @@ export default async function Page({ params }: { params: Promise<{ page: string 
     <div className="flex flex-col">
       {page.components?.map(async (comp, index)=>{
         const Component = (await import(`@/src/components/${comp.importPath}`)).default as CmsComponent;
-        return <Component id="" style={{order: comp.order}} key={index}><div className="hidden"></div></Component>
+        return <Component id={`${page.slug}:${comp.id}`} style={{order: comp.order}} key={index}><></></Component>
       })}
     </div>
   );

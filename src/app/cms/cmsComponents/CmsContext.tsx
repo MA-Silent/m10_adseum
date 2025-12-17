@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { executeActions, type CmsAction } from "@/src/lib/serverFunctions";
 
 type CmsContextType = {
@@ -9,25 +15,35 @@ type CmsContextType = {
 
 const CmsContext = createContext<CmsContextType | null>(null);
 
-export function CmsProvider({ children, page_slug }: { children: ReactNode, page_slug: string }) {
+export function CmsProvider({
+  children,
+  page_slug,
+}: {
+  children: ReactNode;
+  page_slug: string;
+}) {
   const [actions, setActions] = useState<CmsAction[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string>();
 
-  useEffect(()=>{
-    actions.forEach((action)=>{
-      if(action.type === "move"){
-        const domComponent = document.getElementById(`component:${action.component.id}`)!;
+  useEffect(() => {
+    actions.forEach((action) => {
+      if (action.type === "move") {
+        const domComponent = document.getElementById(
+          `${page_slug}:${action.componentID}`,
+        )!;
 
-        domComponent.style.order = `${parseInt(domComponent.style.order) + action.amount}`
+        domComponent.style.order = `${parseInt(domComponent.style.order) + action.amount}`;
       }
-      if(action.type === "remove") {
-        const domComponent = document.getElementById(`component:${action.component.id}`)!;
+      if (action.type === "remove") {
+        const domComponent = document.getElementById(
+          `${page_slug}:${action.componentID}`,
+        )!;
 
-        domComponent.style.display = 'none';
+        domComponent.style.display = "none";
       }
-    })
-  },[actions])
+    });
+  }, [actions, page_slug]);
 
   const addAction = (action: CmsAction) => {
     setActions((prev) => [...prev, action]);
@@ -36,14 +52,13 @@ export function CmsProvider({ children, page_slug }: { children: ReactNode, page
   async function handleSave() {
     setSaving(true);
 
-    if( await executeActions(actions, page_slug) ){
+    if (await executeActions(actions, page_slug)) {
       setActions([]);
       setSaving(false);
     } else {
       setSaving(false);
       setError("Could not save Actions!");
     }
-
   }
 
   return (
@@ -54,9 +69,13 @@ export function CmsProvider({ children, page_slug }: { children: ReactNode, page
         <button
           className="fixed top-2 left-1/2 p-2 bg-sky-400 rounded z-50 shadow-lg text-white font-bold"
           onClick={handleSave}
-          disabled={ saving }
+          disabled={saving}
         >
-          {saving || error ? (error ? `error: ${error}` : "Saving...") : `Save ${actions.length} Changes` }
+          {saving || error
+            ? error
+              ? `error: ${error}`
+              : "Saving..."
+            : `Save ${actions.length} Changes`}
         </button>
       )}
     </CmsContext.Provider>

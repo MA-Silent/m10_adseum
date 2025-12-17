@@ -46,7 +46,7 @@ export default function AddPageButton({ action }: AddPageFormProps) {
               <DialogHeader>
                 <DialogTitle>Add Page</DialogTitle>
                 <DialogDescription>
-                  Create a new page here. <br />Press save when you're done!
+                  Create a new page here. <br />Press save when you&apos;re done!
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4">
