@@ -25,7 +25,7 @@ const TextInput: CmsComponent = ({children, id, style}) => {
       {children}
         <form className="size-full" onSubmit={(e) => { e.preventDefault(); addAction({ type: 'InsertText', key: id, componentID: componentID ,contentEN: content }) }}>
           <textarea name="Text" id="" placeholder="Insert text here" className="size-full resize-none" onChange={(e) => setContent(e.currentTarget.value)} defaultValue={text}></textarea>
-          {content && <button type="submit" className="bg-chart-2">Done</button>}
+          {content && content != text && <button type="submit" className="bg-chart-2">Done</button>}
         </form>
     </div>
   )

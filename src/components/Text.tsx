@@ -16,8 +16,6 @@ const Text: CmsComponent = function ({children, id, style}) {
     }
   },[ref])
 
-
-
   return (
     <div
       id={id}
