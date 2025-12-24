@@ -3,7 +3,7 @@ import TextInput from "../app/cms/cmsComponents/TextInput";
 import { getDynamicText } from "../lib/pages";
 import * as React from "react"
 
-const Text: CmsComponent = function ({children, id, style}) {
+const Text: CmsComponent = async function ({children, id, style}) {
   const number = 3;
 
   return (
@@ -12,7 +12,7 @@ const Text: CmsComponent = function ({children, id, style}) {
       className="relative w-full grid sm:grid-cols-(--length) not-sm:grid-rows-(--length) not-sm:gap-5 justify-items-center"
       style={ {...style, "--length": `repeat(${number},minmax(0,1fr))` } as React.CSSProperties}
     >
-      {Promise.all(Array.from({ length: number }).map(async (_, index) => {
+      {await Promise.all(Array.from({ length: number }).map(async (_, index) => {
         let text = "";
         text = await getDynamicText(`${id}-${index}`)
         let cms: boolean = false;
