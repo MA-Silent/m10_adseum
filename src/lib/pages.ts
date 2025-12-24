@@ -37,7 +37,6 @@ export const getPages = (): Promise<Page[]> => unstable_cache(
 
 export const getDynamicText = (textKey: string): Promise<string> => unstable_cache(
   async () => {
-    'use server'
     const localeFile: LocaleFile = JSON.parse( fs.readFileSync(path.resolve(process.cwd(), `locales/${await getLocale().then((e)=>e.trim().toLowerCase())}.json`), {encoding: 'utf-8'}) )
     const result = localeFile.components[textKey].content || "No Text"
 
