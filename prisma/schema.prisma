@@ -12,7 +12,6 @@ model User {
   password String
   email String @unique
   name String
-  posts Post[]
   session Session?
 }
 
@@ -22,14 +21,6 @@ model Session {
   user User @relation(fields: [userId], references: [id])
   userId String @unique
   createdAt DateTime @default(now())
-}
-
-model Post {
-  id Int @id @default(autoincrement())
-  title String
-  content String
-  author User @relation(fields: [authorId], references: [id])
-  authorId String
 }
 
 model shopItem {

@@ -3,6 +3,7 @@ import { Edit, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PopupButton from "../cmsComponents/PopupButton";
 import * as React from "react"
+import { revalidatePath } from "next/cache";
 
 type User = {
     id: string;
@@ -20,12 +21,12 @@ export default async function userManagementPage() {
     await prisma.user.delete({
       where: { id: user.id }
     })
+    revalidatePath('/cms/users')
   }
 
   return(
     <div>
       <table className="max-h-full overflow-auto">
-
         <thead>
           <tr className="bg-secondary">
             <th className="border px-4 py-2">Name</th>
@@ -78,7 +79,6 @@ export default async function userManagementPage() {
             )
           })}
         </tbody>
-
       </table>
     </div>
   )
