@@ -12,7 +12,7 @@ const Text: CmsComponent = function ({children, id, style}) {
       className="relative w-full grid sm:grid-cols-(--length) not-sm:grid-rows-(--length) not-sm:gap-5 justify-items-center"
       style={ {...style, "--length": `repeat(${number},minmax(0,1fr))` } as React.CSSProperties}
     >
-      {Array.from({ length: number }).map(async (_, index) => {
+      {Promise.all(Array.from({ length: number }).map(async (_, index) => {
         let text = "";
         text = await getDynamicText(`${id}-${index}`)
         let cms: boolean = false;
@@ -24,7 +24,7 @@ const Text: CmsComponent = function ({children, id, style}) {
         return (
           !cms ? <div key={index} className="w-1/2">{text}</div> : <div key={index}><TextInput id={`${id}-${index}`}><></></TextInput></div>
         )
-      })}
+      }) || [])}
       <div>
         {children}
       </div>
