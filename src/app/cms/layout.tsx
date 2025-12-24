@@ -58,8 +58,8 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
   const pages = await prisma.page.findMany();
 
   return (
-    <div className="w-full h-full flex">
-      <div className="bg-sidebar-accent h-full w-96 flex flex-col items-center">
+    <div className="w-full min-h-full h-auto flex">
+      <div className="bg-sidebar-accent min-h-full h-auto w-96 flex flex-col items-center">
         <div className="w-full h-16 flex">
           <div className="size-full items-center justify-center flex">Logo</div>
         </div>
@@ -84,7 +84,7 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
         </ScrollArea>
 
       </div>
-      <div className="w-full h-full">
+      <div className="w-full min-h-full h-auto">
         {children}
       </div>
     </div>
