@@ -1,16 +1,9 @@
+export const runtime = 'nodejs';
 import { CmsComponent } from "@/src/components/componentType";
-import { prisma } from "@/src/lib/prisma";
+import { getPage } from "@/src/lib/pages";
 
 export default async function Page({ params }: { params: Promise<{ page: string }> }) {
-  const page = await prisma.page.findFirst({
-          where: {
-            slug: (await params).page
-          },
-          include: {
-            components: true
-          }
-        })
-
+  const page = await getPage((await params).page)
   if(page == null) return <div className="flex justify-center items-center h-full">404 Page not Found!</div>
 
   return (
