@@ -128,16 +128,32 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
       }
 
       if(action.type == 'InsertText'){
-        const resolvedPath = path.resolve(process.cwd(), `locales/${await getLocale().then((l)=>l.trim().toLowerCase())}.json`);
-        const key = action.key
+        const locale = (await getLocale()).trim().toLowerCase();
+        let contentEN = '';
+        let contentNL = '';
 
-        const LocaleFile: LocaleFile = JSON.parse(fs.readFileSync(resolvedPath, {encoding: 'utf-8'}));
-        LocaleFile.components[key] ??= {content: ""}
-        LocaleFile.components[key].content = action.contentEN;
+        if (locale == 'nl') {
+          contentNL = action.contentEN;
+        }
 
-        fs.writeFileSync(resolvedPath, JSON.stringify(LocaleFile))
+        if (locale == 'en') {
+          contentEN = action.contentEN;
+        }
 
-        revalidateTag(`DynamicText:${key}`, 'max')
+        await prisma.localeText.upsert({
+          where: { key: action.key },
+          update: {
+            contentEN: contentEN,
+            contentNL: contentNL
+          },
+          create: {
+            key: action.key,
+            contentEN: contentEN,
+            contentNL: contentNL
+          }
+        })
+
+        revalidateTag(`DynamicText:${action.key}`, 'max')
       }
 
       last = action;
@@ -167,6 +183,6 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
 export async function getDynamicTextFromClient(textKey: string){
   'use server'
 
-  const test = await getDynamicText(textKey)
-  return test
+  const dynamicText = await getDynamicText(textKey)
+  return dynamicText
 }

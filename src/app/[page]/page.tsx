@@ -1,3 +1,4 @@
+import LocaleSwitch from "@/components/LocaleSwitch";
 import { CmsComponent } from "@/src/components/componentType";
 import { getPage } from "@/src/lib/pages";
 

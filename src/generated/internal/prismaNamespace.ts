@@ -390,7 +390,8 @@ export const ModelName = {
   shopItem: 'shopItem',
   Artist: 'Artist',
   Component: 'Component',
-  Page: 'Page'
+  Page: 'Page',
+  LocaleText: 'LocaleText'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -406,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "post" | "shopItem" | "artist" | "component" | "page"
+    modelProps: "user" | "session" | "post" | "shopItem" | "artist" | "component" | "page" | "localeText"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -928,6 +929,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LocaleText: {
+      payload: Prisma.$LocaleTextPayload<ExtArgs>
+      fields: Prisma.LocaleTextFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LocaleTextFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LocaleTextFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>
+        }
+        findFirst: {
+          args: Prisma.LocaleTextFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LocaleTextFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>
+        }
+        findMany: {
+          args: Prisma.LocaleTextFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>[]
+        }
+        create: {
+          args: Prisma.LocaleTextCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>
+        }
+        createMany: {
+          args: Prisma.LocaleTextCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LocaleTextCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>[]
+        }
+        delete: {
+          args: Prisma.LocaleTextDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>
+        }
+        update: {
+          args: Prisma.LocaleTextUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>
+        }
+        deleteMany: {
+          args: Prisma.LocaleTextDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LocaleTextUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LocaleTextUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>[]
+        }
+        upsert: {
+          args: Prisma.LocaleTextUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LocaleTextPayload>
+        }
+        aggregate: {
+          args: Prisma.LocaleTextAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLocaleText>
+        }
+        groupBy: {
+          args: Prisma.LocaleTextGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LocaleTextGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LocaleTextCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LocaleTextCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1039,6 +1114,15 @@ export const PageScalarFieldEnum = {
 } as const
 
 export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]
+
+
+export const LocaleTextScalarFieldEnum = {
+  key: 'key',
+  contentNL: 'contentNL',
+  contentEN: 'contentEN'
+} as const
+
+export type LocaleTextScalarFieldEnum = (typeof LocaleTextScalarFieldEnum)[keyof typeof LocaleTextScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1220,6 +1304,7 @@ export type GlobalOmitConfig = {
   artist?: Prisma.ArtistOmit
   component?: Prisma.ComponentOmit
   page?: Prisma.PageOmit
+  localeText?: Prisma.LocaleTextOmit
 }
 
 /* Types for Logging */
