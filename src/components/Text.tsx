@@ -1,8 +1,9 @@
-import { useTranslations } from "next-intl";
 import { CmsComponent } from "./componentType";
+import TextInput from "../app/cms/cmsComponents/TextInput";
+import { getDynamicText } from "../lib/pages";
+import * as React from "react"
 
 const Text: CmsComponent = function ({children, id, style}) {
-  const t = useTranslations('Homepage')
   const number = 3;
 
   return (
@@ -11,10 +12,18 @@ const Text: CmsComponent = function ({children, id, style}) {
       className="relative w-full grid sm:grid-cols-(--length) not-sm:grid-rows-(--length) not-sm:gap-5 justify-items-center"
       style={ {...style, "--length": `repeat(${number},minmax(0,1fr))` } as React.CSSProperties}
     >
-      {Array.from({ length: number }).map((_,index) => (
-        <div key={index} className="w-1/2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque numquam earum error, soluta sequi, maiores harum vero dolores dolor alias dolore itaque? Doloribus aperiam eos repellendus harum. Ab, eaque dolorum.</div>
-      ))}
-      {children}
+      {Array.from({ length: number }).map(async (_, index) => {
+        let text = "";
+        text = await getDynamicText(`${id}-${index}`)
+        const cms = !((children as {type: symbol} | undefined)?.type.toString() == 'Symbol(react.fragment)')
+
+        return (
+          !cms ? <div key={index} className="w-1/2">{text}</div> : <div key={index}><TextInput id={`${id}-${index}`}><></></TextInput></div>
+        )
+      })}
+      <div>
+        {children}
+      </div>
     </div>
   );
 }

@@ -24,7 +24,7 @@ export async function isLoggedin(): Promise<boolean>{
 
 export async function registerUser(email: string, password: string, username: string){
   try{
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         email: email.trim().toLowerCase(),
         name: username.trim(),

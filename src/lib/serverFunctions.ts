@@ -5,22 +5,31 @@ import path from "path";
 import { prisma } from "./prisma";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { isLoggedin } from "./auth";
+import { getLocale } from "next-intl/server";
+import { getDynamicText } from "./pages";
 
 type MoveAction = {
   type: "move"
-  component: Comp,
+  componentID: number,
   amount: number
 }
 
 type RemoveAction = {
   type: "remove",
-  component: Comp
+  componentID: number
+}
+
+type InsertTextAction = {
+  type: "InsertText"
+  key: string
+  componentID: number
+  contentEN: string
 }
 
 export type Comp = {
-    id: number;
-    importPath: string;
-    nameComponent: string;
+  id: number;
+  importPath: string;
+  nameComponent: string;
 }
 
 export type Page = {
@@ -29,8 +38,11 @@ export type Page = {
    title: string;
 }
 
-export type CmsAction = MoveAction | RemoveAction;
+export type LocaleFile = {
+  components: Record<string, {content:string}>
+}
 
+export type CmsAction = MoveAction | RemoveAction | InsertTextAction;
 
 export async function getAvailableComponents(): Promise<string[]> {
   const fsRead = fs.readdirSync(path.join(process.cwd(), "src/components"));
@@ -85,32 +97,76 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
   if (!await isLoggedin()) return false;
 
   try {
-    actions.forEach(async (action) => {
-      if (action.type == "move") {
-        await prisma.component.update({
-          where: {
-            id: action.component.id
-          },
-          data: {
-            order: {
-              increment: action.amount
+    let last: CmsAction | undefined;
+    let moveAmount = 0;
+
+    for(const action of actions){
+      if (last?.componentID == action.componentID){
+        if (action.type == 'move'){
+          moveAmount += action.amount;
+        }
+      } else {
+        if(last?.componentID && moveAmount !== 0){
+          await prisma.component.update({
+            where: {
+              id: last.componentID,
+            },
+            data:{
+              order: {
+                increment: moveAmount
+              }
             }
-          }
-        })
+          })
+        }
+        moveAmount = action.type === 'move' ? action.amount : 0;
       }
-      if (action.type == "remove") {
+
+      if(action.type === 'remove'){
         await prisma.component.delete({
-          where: {
-            id: action.component.id
-          }
+          where: { id: action.componentID }
         })
       }
-    });
+
+      if(action.type == 'InsertText'){
+        const resolvedPath = path.resolve(process.cwd(), `locales/${await getLocale().then((l)=>l.trim().toLowerCase())}.json`);
+        const key = action.key
+
+        const LocaleFile: LocaleFile = JSON.parse(fs.readFileSync(resolvedPath, {encoding: 'utf-8'}));
+        LocaleFile.components[key] ??= {content: ""}
+        LocaleFile.components[key].content = action.contentEN;
+
+        fs.writeFileSync(resolvedPath, JSON.stringify(LocaleFile))
+
+        revalidateTag(`DynamicText:${key}`, 'max')
+      }
+
+      last = action;
+    }
+
+    if(last?.componentID && moveAmount !== 0){
+      await prisma.component.update({
+        where: { id: last.componentID },
+        data: {
+          order: {
+            increment: moveAmount,
+          }
+        }
+      })
+    }
+
     revalidateTag(`page:${pageSlug}`, 'max')
     revalidatePath('/cms');
     return true;
+
   } catch {
     revalidatePath('/cms');
     return false;
   }
+}
+
+export async function getDynamicTextFromClient(textKey: string){
+  'use server'
+
+  const test = await getDynamicText(textKey)
+  return test
 }
