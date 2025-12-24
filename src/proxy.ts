@@ -11,6 +11,8 @@ type DecodedRefeshToken = {
   exp: number
 }
 
+let test: any = ""
+
 export async function proxy(req: NextRequest) {
   const response = NextResponse.next();
   if(!(await isLoggedin())){

@@ -3,30 +3,27 @@
 import { useEffect, useRef, useState } from "react";
 import { useCms } from "./CmsContext";
 import { CmsComponent } from "../../../components/componentType";
-import { useTranslations } from "next-intl";
+import { getDynamicTextFromClient } from "@/src/lib/serverFunctions";
 
 const TextInput: CmsComponent = ({children, id, style}) => {
   const [content, setContent] = useState("");
+  const [text, setText] = useState('');
   const { addAction } = useCms();
   const ref = useRef(null)
   const componentInfo = id.split(':');
   const componentID: number = parseInt(componentInfo[1].replace(/-(.*)/gi, ''));
 
-  const t = useTranslations('components');
-  let text = "";
-
-  if(t.has(`${id}.content`)){
-    text = t(`${id}.content`);
-  }else{
-    text = "Please enter text here";
-  }
-
   useEffect(()=>{
     if (!ref.current) return;
     const element: HTMLTextAreaElement = ref.current;
 
+    element.style.height = 'auto';
     element.style.height = element.scrollHeight + 'px';
-  },[ref])
+  },[text])
+
+  useEffect(()=>{
+    getDynamicTextFromClient(id).then((t)=>setText(t))
+  }, [id])
 
   return (
     <div className="relative size-fit w-full" id={id} style={style}>

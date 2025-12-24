@@ -5,6 +5,8 @@ import path from "path";
 import { prisma } from "./prisma";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { isLoggedin } from "./auth";
+import { getLocale } from "next-intl/server";
+import { getDynamicText } from "./pages";
 
 type MoveAction = {
   type: "move"
@@ -36,7 +38,7 @@ export type Page = {
    title: string;
 }
 
-type LocaleFile = {
+export type LocaleFile = {
   components: Record<string, {content:string}>
 }
 
@@ -126,17 +128,16 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
       }
 
       if(action.type == 'InsertText'){
-        const resolvedPath = path.resolve(process.cwd(), "locales/en.json");
-
-        const LocaleFile: LocaleFile = JSON.parse(fs.readFileSync(resolvedPath, {encoding: 'utf-8'}));
-
+        const resolvedPath = path.resolve(process.cwd(), `locales/${await getLocale().then((l)=>l.trim().toLowerCase())}.json`);
         const key = action.key
 
+        const LocaleFile: LocaleFile = JSON.parse(fs.readFileSync(resolvedPath, {encoding: 'utf-8'}));
         LocaleFile.components[key] ??= {content: ""}
-
         LocaleFile.components[key].content = action.contentEN;
 
         fs.writeFileSync(resolvedPath, JSON.stringify(LocaleFile))
+
+        revalidateTag(`DynamicText:${key}`, 'max')
       }
 
       last = action;
@@ -161,4 +162,11 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
     revalidatePath('/cms');
     return false;
   }
+}
+
+export async function getDynamicTextFromClient(textKey: string){
+  'use server'
+
+  const test = await getDynamicText(textKey)
+  return test
 }
