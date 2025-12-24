@@ -1,11 +1,4 @@
 {
   "Homepage": { "title": "Home" },
-  "Header": { "title": "Header Title" },
-  "components": {
-    "home:33-2": { "content": "another test" },
-    "home:33-1": {
-      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in rhoncus est, sed aliquet eros. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla fringilla augue nec lorem vestibulum viverra. Aenean egestas eros in nunc varius, vel venenatis felis interdum. Curabitur dapibus lectus ac nibh venenatis, at lacinia risus aliquam. Quisque lorem quam, convallis vitae odio eget, vehicula finibus lectus. Vestibulum in condimentum augue. Fusce odio nunc, faucibus sit amet tellus in, rutrum feugiat turpis. Cras cursus laoreet dolor eu mattis. Curabitur et turpis justo. Phasellus congue accumsan sapien eget conseq"
-    },
-    "home:33-0": { "content": "well lets test this shall we?" }
-  }
+  "Header": { "title": "Header Title" }
 }

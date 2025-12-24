@@ -65,3 +65,9 @@ model Page {
   slug String @unique
   components Component[]
 }
+
+model LocaleText {
+  key String @unique
+  contentNL String
+  contentEN String
+}

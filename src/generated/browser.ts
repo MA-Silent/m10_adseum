@@ -52,3 +52,8 @@ export type Component = Prisma.ComponentModel
  * 
  */
 export type Page = Prisma.PageModel
+/**
+ * Model LocaleText
+ * 
+ */
+export type LocaleText = Prisma.LocaleTextModel

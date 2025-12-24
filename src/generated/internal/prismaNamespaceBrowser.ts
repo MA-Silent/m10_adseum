@@ -57,7 +57,8 @@ export const ModelName = {
   shopItem: 'shopItem',
   Artist: 'Artist',
   Component: 'Component',
-  Page: 'Page'
+  Page: 'Page',
+  LocaleText: 'LocaleText'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -148,6 +149,15 @@ export const PageScalarFieldEnum = {
 } as const
 
 export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]
+
+
+export const LocaleTextScalarFieldEnum = {
+  key: 'key',
+  contentNL: 'contentNL',
+  contentEN: 'contentEN'
+} as const
+
+export type LocaleTextScalarFieldEnum = (typeof LocaleTextScalarFieldEnum)[keyof typeof LocaleTextScalarFieldEnum]
 
 
 export const SortOrder = {

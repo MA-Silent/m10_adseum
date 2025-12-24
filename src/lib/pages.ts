@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { LocaleFile } from "./serverFunctions";
 import { getLocale } from "next-intl/server";
+import { getMiddlewareRouteMatcher } from "next/dist/shared/lib/router/utils/middleware-route-matcher";
 
 type ComponentPage = ({ components: { importPath: string; nameComponent: string; order: number; id: number; }[]; } & { id: number; slug: string; title: string; }) | null
 type Page = { id: number; title: string; slug: string; }
@@ -37,10 +38,10 @@ export const getPages = (): Promise<Page[]> => unstable_cache(
 
 export const getDynamicText = (textKey: string): Promise<string> => unstable_cache(
   async () => {
-    const localeFile: LocaleFile = JSON.parse( fs.readFileSync(path.resolve(process.cwd(), `locales/${await getLocale().then((e)=>e.trim().toLowerCase())}.json`), {encoding: 'utf-8'}) )
-    const result = localeFile.components[textKey]?.content || "No Text"
+    const locale = (await getLocale()).trim().toLowerCase();
+    const result = await prisma.localeText.findUnique({ where: { key: textKey } }) || {contentEN: "No Text Found", contentNL: "No Text Found"}
 
-    return result
+    return locale == 'nl' ? result.contentNL : result.contentEN
   },
   ['DynamicText', textKey],
   {
