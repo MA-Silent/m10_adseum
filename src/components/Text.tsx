@@ -16,6 +16,7 @@ const Text: CmsComponent = function ({children, id, style}) {
         let text = "";
         text = await getDynamicText(`${id}-${index}`)
         let cms: boolean = false;
+        // @ts-expect-error type does exist
         if(children && !(typeof(children.type) == 'symbol')){
           cms = true
         }
