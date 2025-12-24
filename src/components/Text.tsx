@@ -15,7 +15,10 @@ const Text: CmsComponent = function ({children, id, style}) {
       {Array.from({ length: number }).map(async (_, index) => {
         let text = "";
         text = await getDynamicText(`${id}-${index}`)
-        const cms = !((children as {type: symbol} | undefined)?.type.toString() == 'Symbol(react.fragment)')
+        let cms: boolean = false;
+        if(children && !(typeof(children.type) == 'symbol')){
+          cms = true
+        }
 
         return (
           !cms ? <div key={index} className="w-1/2">{text}</div> : <div key={index}><TextInput id={`${id}-${index}`}><></></TextInput></div>
