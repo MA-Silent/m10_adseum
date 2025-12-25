@@ -10,7 +10,6 @@
  */
 export type * from './models/User'
 export type * from './models/Session'
-export type * from './models/Post'
 export type * from './models/shopItem'
 export type * from './models/Artist'
 export type * from './models/Component'

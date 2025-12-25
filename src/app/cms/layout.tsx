@@ -10,6 +10,7 @@ import z from "zod";
 import { revalidatePath } from "next/cache";
 import { revalidateTag } from "next/cache";
 import { Prisma } from "@/src/generated/client";
+import { cmsNav } from "./cmsRoutes";
 
 const pageSchema = z.object({
   slug: z.string(),
@@ -74,7 +75,7 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
               {pages.map((page, index) => {
                 return (
                   <React.Fragment key={page.id}>
-                    <Link href={`/cms/${page.slug}`} className="cursor-pointer w-full text-foreground/80 hover:text-white  font-normal text-lg" > {page.title} </Link>
+                    <Link href={`/cms/${page.slug}`} className="cursor-pointer w-full text-foreground/80 hover:text-foreground font-normal text-lg" > {page.title} </Link>
                     {index !== pages.length - 1 && <div className="w-full h-px bg-current/20"/>}
                   </React.Fragment>
                 )
@@ -82,6 +83,14 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
             </div>
           </div>
         </ScrollArea>
+
+        <div className="flex flex-col w-full h-auto gap-2 p-4">
+          {cmsNav.map((item, index)=>{
+            return (
+              <Link className="text-foreground/80 hover:text-foreground font-semibold text-xl size-fit" href={item.href} key={index}>{item.label}</Link>
+            )
+          })}
+        </div>
 
       </div>
       <div className="w-full min-h-full h-auto">
