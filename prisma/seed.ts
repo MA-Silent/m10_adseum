@@ -1,22 +1,24 @@
-import "dotenv/config"
+import "dotenv/config";
 import { PrismaClient } from "@/src/generated/client";
-import { PrismaPg } from "@prisma/adapter-pg"
-import * as bcrypt from "bcrypt";
-import { uuid } from "zod";
-import { randomUUID } from "crypto";
+import { PrismaPg } from "@prisma/adapter-pg";
+import bcrypt from "bcrypt";
 
 if (!process.env.DATABASE_URL) {
   throw new Error("Missing DATABASE_URL");
 }
 
-const prisma = new PrismaClient({ adapter: new PrismaPg({
-  connectionString: `${process.env.DATABASE_URL}`
-}) });
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({
+    connectionString: process.env.DATABASE_URL,
+  }),
+});
 
 async function main() {
+  const passwordHash = await bcrypt.hash("password123", 10);
+
   // --- COMPONENT ---
   const headerComponent = await prisma.component.upsert({
-    where: { id: 2 },
+    where: { nameComponent: "Header" },
     update: {},
     create: {
       importPath: "Header",
@@ -24,15 +26,16 @@ async function main() {
     },
   });
 
+  // --- ADMIN USER ---
   const admin = await prisma.user.upsert({
-    where: {email: "admin@admin.admin"},
+    where: { email: "admin@admin.admin" },
     update: {},
     create: {
       email: "admin@admin.admin",
       name: "admin",
-      password: (await bcrypt.hash("admin", 10)),
-    }
-  })
+      password: await bcrypt.hash("admin", 10),
+    },
+  });
 
   // --- USERS ---
   const alice = await prisma.user.upsert({
@@ -41,13 +44,7 @@ async function main() {
     create: {
       email: "alice@prisma.io",
       name: "Alice",
-      password: "password123",
-      posts: {
-        create: {
-          title: "Check out Prisma with Next.js",
-          content: "https://www.prisma.io/nextjs",
-        },
-      },
+      password: passwordHash,
     },
   });
 
@@ -57,19 +54,7 @@ async function main() {
     create: {
       email: "bob@prisma.io",
       name: "Bob",
-      password: "password123",
-      posts: {
-        create: [
-          {
-            title: "Follow Prisma on Twitter",
-            content: "https://twitter.com/prisma",
-          },
-          {
-            title: "Follow Nexus on Twitter",
-            content: "https://twitter.com/nexusgql",
-          },
-        ],
-      },
+      password: passwordHash,
     },
   });
 
@@ -80,6 +65,9 @@ async function main() {
     create: {
       title: "Homepage",
       slug: "home",
+      components: {
+        connect: { id: headerComponent.id },
+      },
     },
   });
 
@@ -89,6 +77,9 @@ async function main() {
     create: {
       title: "Over Ons",
       slug: "over-ons",
+      components: {
+        connect: { id: headerComponent.id },
+      },
     },
   });
 
@@ -101,28 +92,9 @@ async function main() {
     },
   });
 
-  // --- CONNECT COMPONENT TO PAGES ---
-  await prisma.page.update({
-    where: { id: homePage.id },
-    data: {
-      components: {
-        connect: { id: headerComponent.id },
-      },
-    },
-  });
-
-  await prisma.page.update({
-    where: { id: aboutPage.id },
-    data: {
-      components: {
-        connect: { id: headerComponent.id },
-      },
-    },
-  });
-
   // --- SHOP ITEMS ---
   const tShirt = await prisma.shopItem.upsert({
-    where: { id: 1 },
+    where: { title: "Cool T-Shirt" },
     update: {},
     create: {
       title: "Cool T-Shirt",
@@ -136,7 +108,7 @@ async function main() {
   });
 
   const poster = await prisma.shopItem.upsert({
-    where: { id: 2 },
+    where: { title: "Vintage Poster" },
     update: {},
     create: {
       title: "Vintage Poster",
@@ -169,6 +141,7 @@ async function main() {
   });
 
   console.log({
+    admin,
     alice,
     bob,
     homePage,
@@ -182,11 +155,10 @@ async function main() {
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
+  .catch((e) => {
     console.error(e);
-    await prisma.$disconnect();
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });
