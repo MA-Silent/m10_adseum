@@ -1,15 +1,20 @@
+import { Field,FieldGroup,FieldLabel,FieldSet,FieldError } from "@/components/ui/field"
+import { Input } from "@/components/ui/input";
 import { prisma } from "@/src/lib/prisma"
 import { Edit, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PopupButton from "../cmsComponents/PopupButton";
 import * as React from "react"
 import { revalidatePath } from "next/cache";
+import { isLoggedin } from "@/src/lib/auth";
+import z from "zod";
+import * as bcrypt from "bcrypt"
 
 type User = {
-    id: string;
-    password: string;
-    email: string;
-    name: string;
+  id: string;
+  password: string;
+  email: string;
+  name: string;
 }
 
 export default async function userManagementPage() {
@@ -17,10 +22,27 @@ export default async function userManagementPage() {
 
   async function deleteUser(user: User) {
     'use server'
+    if (!(await isLoggedin())) return;
 
     await prisma.user.delete({
       where: { id: user.id }
     })
+
+    revalidatePath('/cms/users')
+  }
+
+  async function editUser(user: User, newPassword: string, newEmail: string) {
+    'use server'
+    if (!(await isLoggedin())) return;
+
+    await prisma.user.update({
+      where: {id: user.id},
+      data: {
+        email: newEmail,
+        password: await bcrypt.hash(newPassword, 10)
+      }
+    })
+
     revalidatePath('/cms/users')
   }
 
@@ -51,14 +73,14 @@ export default async function userManagementPage() {
                         <div className="fixed size-fit top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-foreground">
                           <div className="border p-6 h-fit w-96 rounded-2xl bg-background">
 
-                            <div className="text-lg font-semibold">Are you sure?</div>
+                            <h2 className=" font-semibold">Are you sure?</h2>
 
-                            <div className="text-muted-foreground text-base font-normal">you are deleting the user: &quot;{user.name}&quot;</div>
+                            <p className="text-muted-foreground font-normal">you are deleting the user: &quot;{user.name}&quot;</p>
 
-                            <div className="w-full flex justify-end">
+                            <div className="w-full flex justify-end pt-4">
                               <div className="flex gap-4">
-                                <Button variant="outline">No</Button>
-                                <Button variant="default" onClick={deleteUser.bind(undefined, user)}>Yes</Button>
+                                <Button className="cursor-pointer" variant="outline">No</Button>
+                                <Button className="cursor-pointer" variant="default" onClick={deleteUser.bind(undefined, user)}>Yes</Button>
                               </div>
                             </div>
 
@@ -66,9 +88,41 @@ export default async function userManagementPage() {
                         </div>
                       </PopupButton>
 
-                      <PopupButton icon={<Edit className="hover:cursor-pointer" />}>
-                        <div className="fixed size-fit top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-foreground">
+                      <PopupButton callBack={async (_, rawFormData)=>{
+                        'use server'
+                        if (!(await isLoggedin())) return;
 
+                        const editSchema = z.object({ email: z.email(), password: z.string() })
+                        const { success, data} = editSchema.safeParse( Object.fromEntries(rawFormData.entries()) )
+                        if (!success) return;
+
+                        editUser(user, data.password, data.email);
+                      }}
+                      icon={<Edit className="hover:cursor-pointer" />}>
+                        <div className="fixed size-fit top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-foreground">
+                          <div className="relative h-fit w-xl bg-background border rounded-2xl p-6">
+                            <h1>Editing: &quot;{user.name}&quot;</h1>
+
+                            <FieldSet className="pt-6">
+                              <FieldGroup>
+                                <Field>
+                                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                                  <Input id="email" type="email" name="email" defaultValue={user.email} placeholder="example@example.com" />
+                                </Field>
+                                <Field>
+                                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                                  <Input id="password" type="password" name="password" placeholder="••••••••" />
+                                </Field>
+                                <Field className="flex flex-row">
+                                  <div className="flex gap-2 justify-end">
+                                    <Button variant="outline">Cancel</Button>
+                                    <Button>Submit</Button>
+                                  </div>
+                                </Field>
+                              </FieldGroup>
+                            </FieldSet>
+
+                          </div>
                         </div>
                       </PopupButton>
 
