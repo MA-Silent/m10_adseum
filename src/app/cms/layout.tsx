@@ -10,6 +10,7 @@ import z from "zod";
 import { revalidatePath } from "next/cache";
 import { revalidateTag } from "next/cache";
 import { Prisma } from "@/src/generated/client";
+import { Toaster } from "sonner";
 import { cmsNav } from "./cmsRoutes";
 
 const pageSchema = z.object({
@@ -60,6 +61,7 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
 
   return (
     <div className="w-full min-h-full h-auto flex">
+      <div id='testing' className="absolute top-0 z-20"><Toaster /></div>
       <div className="bg-sidebar-accent min-h-full h-auto w-96 flex flex-col items-center">
         <div className="w-full h-16 flex">
           <div className="size-full items-center justify-center flex">Logo</div>

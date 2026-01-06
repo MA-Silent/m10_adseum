@@ -1,20 +1,29 @@
 'use client'
-import { useActionState, useState } from "react"
+import { useActionState, useEffect, useState } from "react"
+import { toast } from "sonner"
 
 type userModal = React.PropsWithChildren & {
   icon: React.ReactNode
-  callBack?: (_: void | undefined, formData: FormData )=>Promise<void>
+  callBack?: (_: { success: boolean } | undefined, formData: FormData) => Promise<{ success: boolean }>
+  toastData?: { title: string, description: string}
 }
 
-export default function PopupButton({children, icon, callBack}: userModal) {
+export default function PopupButton({children, icon, callBack, toastData}: userModal) {
   const [open, setOpen] = useState(false);
-  const [__, formAction, _] = useActionState(callBack? callBack : ()=>{}, undefined);
+  const [state, formAction, _] = useActionState(callBack ? callBack : ()=>undefined, undefined);
+
+  useEffect(()=>{
+    if (state?.success == true) { setOpen(false) }
+    if (state?.success === false && toastData) {
+      toast(toastData.title, { description: toastData.description });
+    }
+  }, [state])
 
   return (
     <>
       <button className="size-fit" onClick={()=>setOpen((prev)=>!prev)}>{icon}</button>
       {open && <div onClick={()=>setOpen(false)} className="fixed top-0 left-0 bottom-0 right-0 bg-background/60" />}
-      {open && <form action={formAction} onSubmit={() => { setOpen(false) } }>{children}</form>}
+      {open && <form action={formAction}> {children} </form>}
     </>
   )
 }

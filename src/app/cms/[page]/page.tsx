@@ -5,6 +5,7 @@ import CmsAddButton from "../cmsComponents/CmsAddButton";
 import { CmsComponent } from "@/src/components/componentType";
 import CmsComponentBar from "../cmsComponents/CmsComponentBar";
 import { CmsProvider } from "../cmsComponents/CmsContext";
+import { Toaster } from "@/components/ui/sonner";
 
 export default async function CmsPage({ params }: { params: Promise<{ page: string }> }) {
   const slug = (await params).page;

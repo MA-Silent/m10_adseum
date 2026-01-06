@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { isLoggedin } from "@/src/lib/auth";
 import z from "zod";
 import * as bcrypt from "bcrypt"
+import { Prisma } from "@/src/generated/client";
 
 type User = {
   id: string;
@@ -31,19 +32,27 @@ export default async function userManagementPage() {
     revalidatePath('/cms/users')
   }
 
-  async function editUser(user: User, newPassword: string, newEmail: string) {
+  async function editUser(user: User, newPassword: string, newEmail: string): Promise<boolean> {
     'use server'
-    if (!(await isLoggedin())) return;
+    if (!(await isLoggedin())) return false;
+    let result: boolean = false;
 
-    await prisma.user.update({
-      where: {id: user.id},
-      data: {
-        email: newEmail,
-        password: await bcrypt.hash(newPassword, 10)
+    try {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          email: newEmail,
+          password: await bcrypt.hash(newPassword, 10)
+        }
+      })
+      result = true;
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+        result = false;
       }
-    })
-
-    revalidatePath('/cms/users')
+    }
+    revalidatePath('/cms/users');
+    return result;
   }
 
   return(
@@ -88,16 +97,16 @@ export default async function userManagementPage() {
                         </div>
                       </PopupButton>
 
-                      <PopupButton callBack={async (_, rawFormData)=>{
+                      <PopupButton callBack={async (_, rawFormData): Promise<{ success: boolean }> => {
                         'use server'
-                        if (!(await isLoggedin())) return;
+                        if (!(await isLoggedin())) return { success: false };
 
                         const editSchema = z.object({ email: z.email(), password: z.string() })
                         const { success, data} = editSchema.safeParse( Object.fromEntries(rawFormData.entries()) )
-                        if (!success) return;
+                        if (!success) return {success: false};
 
-                        editUser(user, data.password, data.email);
-                      }}
+                        return { success: await editUser(user, data.password, data.email) };
+                      }} toastData={{ title: 'An error occurred', description: 'An error occurred while trying to update a user' }}
                       icon={<Edit className="hover:cursor-pointer" />}>
                         <div className="fixed size-fit top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-foreground">
                           <div className="relative h-fit w-xl bg-background border rounded-2xl p-6">
