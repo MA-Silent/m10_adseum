@@ -17,7 +17,7 @@ export default function PopupButton({children, icon, callBack, toastData}: userM
     if (state?.success === false && toastData) {
       toast(toastData.title, { description: toastData.description });
     }
-  }, [state])
+  }, [state, toastData])
 
   return (
     <>
