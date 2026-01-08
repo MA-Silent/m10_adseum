@@ -54,6 +54,8 @@ model Page {
   id Int @id @default(autoincrement())
   title String
   slug String @unique
+  shown Boolean @default(true)
+  last_updated DateTime @default(now())
   components Component[]
 }
 

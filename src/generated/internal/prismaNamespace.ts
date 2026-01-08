@@ -1025,7 +1025,9 @@ export type ComponentScalarFieldEnum = (typeof ComponentScalarFieldEnum)[keyof t
 export const PageScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  slug: 'slug'
+  slug: 'slug',
+  shown: 'shown',
+  last_updated: 'last_updated'
 } as const
 
 export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]
@@ -1115,6 +1117,13 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 /**

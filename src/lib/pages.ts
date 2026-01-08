@@ -1,13 +1,10 @@
 import { prisma } from "./prisma"
 import { unstable_cache } from "next/cache"
-import fs from "fs";
-import path from "path";
-import { LocaleFile } from "./serverFunctions";
 import { getLocale } from "next-intl/server";
-import { getMiddlewareRouteMatcher } from "next/dist/shared/lib/router/utils/middleware-route-matcher";
+import { PageModel } from "../generated/models";
 
 type ComponentPage = ({ components: { importPath: string; nameComponent: string; order: number; id: number; }[]; } & { id: number; slug: string; title: string; }) | null
-type Page = { id: number; title: string; slug: string; }
+type Page = PageModel;
 
 export const getPage = (page_slug: string): Promise<ComponentPage> => unstable_cache(
   async () => {
@@ -28,7 +25,7 @@ export const getPage = (page_slug: string): Promise<ComponentPage> => unstable_c
 
 export const getPages = (): Promise<Page[]> => unstable_cache(
   async () => {
-    return await prisma.page.findMany()
+    return await prisma.page.findMany({ where: { shown: true } })
   },
   ['pages'],
   {

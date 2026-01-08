@@ -10,8 +10,14 @@ import z from "zod";
 import { revalidatePath } from "next/cache";
 import { revalidateTag } from "next/cache";
 import { Prisma } from "@/src/generated/client";
-import { Toaster } from "sonner";
 import { cmsNav } from "./cmsRoutes";
+import PopupButton from "./cmsComponents/PopupButton";
+import { Wrench } from "lucide-react";
+import { Field, FieldLabel, FieldGroup, FieldSet } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Toaster } from "sonner"
+import { updateTag } from "next/cache";
 
 const pageSchema = z.object({
   slug: z.string(),
@@ -43,6 +49,8 @@ const addPage = async (_: ActionReturn, formData: FormData): Promise<ActionRetur
         return "Page already exists!"
       }
     }
+
+    revalidateTag(`page:${slug}`, 'max')
     revalidateTag('pages', 'max');
     revalidatePath('/cms');
   }else{
@@ -61,7 +69,6 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
 
   return (
     <div className="w-full min-h-full h-auto flex">
-      <div id='testing' className="absolute top-0 z-20"><Toaster /></div>
       <div className="bg-sidebar-accent min-h-full h-auto w-96 flex flex-col items-center">
         <div className="w-full h-16 flex">
           <div className="size-full items-center justify-center flex">Logo</div>
@@ -77,7 +84,56 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
               {pages.map((page, index) => {
                 return (
                   <React.Fragment key={page.id}>
-                    <Link href={`/cms/${page.slug}`} className="cursor-pointer w-full text-foreground/80 hover:text-foreground font-normal text-lg" > {page.title} </Link>
+                    <div className="flex flex-row gap-1">
+                      <Link href={`/cms/${page.slug}`} className="cursor-pointer w-full text-foreground/80 hover:text-foreground font-normal text-lg" > {page.title} </Link>
+                      <PopupButton icon={<Wrench />} toastData={{title: 'An error ooccurred', description: 'There was an error while trying to update the page'}} callBack={async (_, rawFormData) => {
+                        'use server'
+                        const formSchema = z.object({
+                          title: z.string(),
+                          shown: z.string().default('off')
+                        })
+                        const { success, data } = formSchema.safeParse( Object.fromEntries(rawFormData) );
+
+                        if (success) {
+                          await prisma.page.update({
+                            where: { slug: page.slug },
+                            data: { shown: data.shown == 'on' ? true : false, title: data.title }
+                          });
+
+                          console.log(`${JSON.stringify(data)}`)
+
+                          updateTag('pages');
+                        }
+
+                        return { success: success }
+                      }} >
+                        <div className="fixed size-fit top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-foreground">
+                          <div className="border p-6 h-fit w-96 rounded-2xl bg-background">
+
+                            <FieldSet className="pt-6">
+                              <FieldGroup>
+                                <Field>
+                                  <FieldLabel htmlFor="title">Title</FieldLabel>
+                                  <Input id="title" type="text" name="title" defaultValue={page.title} />
+                                </Field>
+
+                                <div className="flex flex-row ">
+                                  <Input className="size-4" id="shown" type="checkbox" name="shown" defaultChecked={page.shown} />
+                                  <FieldLabel className="px-2" htmlFor="shown">Public</FieldLabel>
+                                </div>
+
+                                <Field className="flex flex-row">
+                                  <div className="flex gap-2 justify-end">
+                                    <Button>Submit</Button>
+                                  </div>
+                                </Field>
+                              </FieldGroup>
+                            </FieldSet>
+
+                          </div>
+                        </div>
+                      </PopupButton>
+                    </div>
                     {index !== pages.length - 1 && <div className="w-full h-px bg-current/20"/>}
                   </React.Fragment>
                 )
@@ -96,6 +152,7 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
 
       </div>
       <div className="w-full min-h-full h-auto">
+        <Toaster theme="dark" />
         {children}
       </div>
     </div>

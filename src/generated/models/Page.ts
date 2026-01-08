@@ -38,18 +38,24 @@ export type PageMinAggregateOutputType = {
   id: number | null
   title: string | null
   slug: string | null
+  shown: boolean | null
+  last_updated: Date | null
 }
 
 export type PageMaxAggregateOutputType = {
   id: number | null
   title: string | null
   slug: string | null
+  shown: boolean | null
+  last_updated: Date | null
 }
 
 export type PageCountAggregateOutputType = {
   id: number
   title: number
   slug: number
+  shown: number
+  last_updated: number
   _all: number
 }
 
@@ -66,18 +72,24 @@ export type PageMinAggregateInputType = {
   id?: true
   title?: true
   slug?: true
+  shown?: true
+  last_updated?: true
 }
 
 export type PageMaxAggregateInputType = {
   id?: true
   title?: true
   slug?: true
+  shown?: true
+  last_updated?: true
 }
 
 export type PageCountAggregateInputType = {
   id?: true
   title?: true
   slug?: true
+  shown?: true
+  last_updated?: true
   _all?: true
 }
 
@@ -171,6 +183,8 @@ export type PageGroupByOutputType = {
   id: number
   title: string
   slug: string
+  shown: boolean
+  last_updated: Date
   _count: PageCountAggregateOutputType | null
   _avg: PageAvgAggregateOutputType | null
   _sum: PageSumAggregateOutputType | null
@@ -200,6 +214,8 @@ export type PageWhereInput = {
   id?: Prisma.IntFilter<"Page"> | number
   title?: Prisma.StringFilter<"Page"> | string
   slug?: Prisma.StringFilter<"Page"> | string
+  shown?: Prisma.BoolFilter<"Page"> | boolean
+  last_updated?: Prisma.DateTimeFilter<"Page"> | Date | string
   components?: Prisma.ComponentListRelationFilter
 }
 
@@ -207,6 +223,8 @@ export type PageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  shown?: Prisma.SortOrder
+  last_updated?: Prisma.SortOrder
   components?: Prisma.ComponentOrderByRelationAggregateInput
 }
 
@@ -217,6 +235,8 @@ export type PageWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PageWhereInput[]
   NOT?: Prisma.PageWhereInput | Prisma.PageWhereInput[]
   title?: Prisma.StringFilter<"Page"> | string
+  shown?: Prisma.BoolFilter<"Page"> | boolean
+  last_updated?: Prisma.DateTimeFilter<"Page"> | Date | string
   components?: Prisma.ComponentListRelationFilter
 }, "id" | "slug">
 
@@ -224,6 +244,8 @@ export type PageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  shown?: Prisma.SortOrder
+  last_updated?: Prisma.SortOrder
   _count?: Prisma.PageCountOrderByAggregateInput
   _avg?: Prisma.PageAvgOrderByAggregateInput
   _max?: Prisma.PageMaxOrderByAggregateInput
@@ -238,11 +260,15 @@ export type PageScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Page"> | number
   title?: Prisma.StringWithAggregatesFilter<"Page"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Page"> | string
+  shown?: Prisma.BoolWithAggregatesFilter<"Page"> | boolean
+  last_updated?: Prisma.DateTimeWithAggregatesFilter<"Page"> | Date | string
 }
 
 export type PageCreateInput = {
   title: string
   slug: string
+  shown?: boolean
+  last_updated?: Date | string
   components?: Prisma.ComponentCreateNestedManyWithoutPagesInput
 }
 
@@ -250,12 +276,16 @@ export type PageUncheckedCreateInput = {
   id?: number
   title: string
   slug: string
+  shown?: boolean
+  last_updated?: Date | string
   components?: Prisma.ComponentUncheckedCreateNestedManyWithoutPagesInput
 }
 
 export type PageUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  last_updated?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   components?: Prisma.ComponentUpdateManyWithoutPagesNestedInput
 }
 
@@ -263,6 +293,8 @@ export type PageUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  last_updated?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   components?: Prisma.ComponentUncheckedUpdateManyWithoutPagesNestedInput
 }
 
@@ -270,17 +302,23 @@ export type PageCreateManyInput = {
   id?: number
   title: string
   slug: string
+  shown?: boolean
+  last_updated?: Date | string
 }
 
 export type PageUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  last_updated?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PageUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  last_updated?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PageListRelationFilter = {
@@ -297,6 +335,8 @@ export type PageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  shown?: Prisma.SortOrder
+  last_updated?: Prisma.SortOrder
 }
 
 export type PageAvgOrderByAggregateInput = {
@@ -307,12 +347,16 @@ export type PageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  shown?: Prisma.SortOrder
+  last_updated?: Prisma.SortOrder
 }
 
 export type PageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  shown?: Prisma.SortOrder
+  last_updated?: Prisma.SortOrder
 }
 
 export type PageSumOrderByAggregateInput = {
@@ -357,15 +401,23 @@ export type PageUncheckedUpdateManyWithoutComponentsNestedInput = {
   deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type PageCreateWithoutComponentsInput = {
   title: string
   slug: string
+  shown?: boolean
+  last_updated?: Date | string
 }
 
 export type PageUncheckedCreateWithoutComponentsInput = {
   id?: number
   title: string
   slug: string
+  shown?: boolean
+  last_updated?: Date | string
 }
 
 export type PageCreateOrConnectWithoutComponentsInput = {
@@ -396,23 +448,31 @@ export type PageScalarWhereInput = {
   id?: Prisma.IntFilter<"Page"> | number
   title?: Prisma.StringFilter<"Page"> | string
   slug?: Prisma.StringFilter<"Page"> | string
+  shown?: Prisma.BoolFilter<"Page"> | boolean
+  last_updated?: Prisma.DateTimeFilter<"Page"> | Date | string
 }
 
 export type PageUpdateWithoutComponentsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  last_updated?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PageUncheckedUpdateWithoutComponentsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  last_updated?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PageUncheckedUpdateManyWithoutComponentsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  shown?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  last_updated?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -450,6 +510,8 @@ export type PageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   title?: boolean
   slug?: boolean
+  shown?: boolean
+  last_updated?: boolean
   components?: boolean | Prisma.Page$componentsArgs<ExtArgs>
   _count?: boolean | Prisma.PageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["page"]>
@@ -458,21 +520,27 @@ export type PageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   title?: boolean
   slug?: boolean
+  shown?: boolean
+  last_updated?: boolean
 }, ExtArgs["result"]["page"]>
 
 export type PageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
   slug?: boolean
+  shown?: boolean
+  last_updated?: boolean
 }, ExtArgs["result"]["page"]>
 
 export type PageSelectScalar = {
   id?: boolean
   title?: boolean
   slug?: boolean
+  shown?: boolean
+  last_updated?: boolean
 }
 
-export type PageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug", ExtArgs["result"]["page"]>
+export type PageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "shown" | "last_updated", ExtArgs["result"]["page"]>
 export type PageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   components?: boolean | Prisma.Page$componentsArgs<ExtArgs>
   _count?: boolean | Prisma.PageCountOutputTypeDefaultArgs<ExtArgs>
@@ -489,6 +557,8 @@ export type $PagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: number
     title: string
     slug: string
+    shown: boolean
+    last_updated: Date
   }, ExtArgs["result"]["page"]>
   composites: {}
 }
@@ -916,6 +986,8 @@ export interface PageFieldRefs {
   readonly id: Prisma.FieldRef<"Page", 'Int'>
   readonly title: Prisma.FieldRef<"Page", 'String'>
   readonly slug: Prisma.FieldRef<"Page", 'String'>
+  readonly shown: Prisma.FieldRef<"Page", 'Boolean'>
+  readonly last_updated: Prisma.FieldRef<"Page", 'DateTime'>
 }
     
 
