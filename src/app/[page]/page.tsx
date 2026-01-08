@@ -1,6 +1,6 @@
-import LocaleSwitch from "@/components/LocaleSwitch";
 import { CmsComponent } from "@/src/components/componentType";
 import { getPage } from "@/src/lib/pages";
+export const revalidate = 0;
 
 export default async function Page({ params }: { params: Promise<{ page: string }> }) {
   const page = await getPage((await params).page)

@@ -18,27 +18,25 @@ type LoginFormProps = {
 }
 
 export default function LoginForm({ action }: LoginFormProps){
-  const [error, formAction, isPending] = useActionState(action, undefined);
+  const [error, formAction, _] = useActionState(action, undefined);
   return (
-    <>
-      <form className="max-w-sm w-full" action={formAction} >
-        <FieldSet>
-          <FieldGroup>
-            <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input id="email" type="email" name="email" placeholder="example@example.com" />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" name="password" placeholder="••••••••" />
-            </Field>
-            <Field>
-              <FieldError>{error}</FieldError>
-              <Button>Submit</Button>
-            </Field>
-          </FieldGroup>
-        </FieldSet>
-      </form>
-    </>
+    <form className="max-w-sm w-full" action={formAction} >
+      <FieldSet>
+        <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="email">Email</FieldLabel>
+            <Input id="email" type="email" name="email" placeholder="example@example.com" />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="password">Password</FieldLabel>
+            <Input id="password" type="password" name="password" placeholder="••••••••" />
+          </Field>
+          <Field>
+            <FieldError>{error}</FieldError>
+            <Button>Submit</Button>
+          </Field>
+        </FieldGroup>
+      </FieldSet>
+    </form>
   )
 }

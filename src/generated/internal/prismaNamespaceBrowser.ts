@@ -134,7 +134,9 @@ export type ComponentScalarFieldEnum = (typeof ComponentScalarFieldEnum)[keyof t
 export const PageScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  slug: 'slug'
+  slug: 'slug',
+  shown: 'shown',
+  last_updated: 'last_updated'
 } as const
 
 export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]

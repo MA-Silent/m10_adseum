@@ -124,7 +124,6 @@ export default async function userManagementPage() {
                                 </Field>
                                 <Field className="flex flex-row">
                                   <div className="flex gap-2 justify-end">
-                                    <Button variant="outline">Cancel</Button>
                                     <Button>Submit</Button>
                                   </div>
                                 </Field>

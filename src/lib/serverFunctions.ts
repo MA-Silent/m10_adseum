@@ -170,6 +170,10 @@ export async function executeActions(actions: CmsAction[], pageSlug: string): Pr
       })
     }
 
+    try {
+      await prisma.page.update({ where: { slug: pageSlug }, data: { last_updated: new Date() } })
+    } catch {}
+
     revalidateTag(`page:${pageSlug}`, 'max')
     revalidatePath('/cms');
     return true;
