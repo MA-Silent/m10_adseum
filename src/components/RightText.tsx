@@ -2,7 +2,7 @@ import CmsImage from "../devComponents/CmsImage";
 import { CmsComponent } from "./componentType"
 import Text from "./Text";
 
-const LeftText: CmsComponent = async function ({id, children, style, onCMS}) {
+const RightText: CmsComponent = async function ({id, children, style, onCMS}) {
 
   const component_id: number = parseInt( id.split(':')[1] );
 
@@ -17,4 +17,4 @@ const LeftText: CmsComponent = async function ({id, children, style, onCMS}) {
   )
 }
 
-export default LeftText;
+export default RightText;

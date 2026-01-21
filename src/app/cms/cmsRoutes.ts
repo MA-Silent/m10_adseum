@@ -8,4 +8,8 @@ export const cmsNav: navItem[] = [
     label: 'Users',
     href: '/cms/users'
   },
+  {
+    label: 'Images',
+    href: '/cms/images'
+  }
 ]

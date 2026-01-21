@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.2.0",
-  "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
+  "clientVersion": "7.3.0",
+  "engineVersion": "9d6ad21cbbceab97458517b147a6a09ff43aa735",
   "activeProvider": "postgresql",
   "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id       String   @id @unique @default(uuid())\n  password String\n  email    String   @unique\n  name     String\n  session  Session?\n}\n\nmodel Session {\n  id        Int      @id @default(autoincrement())\n  token     String   @unique @default(uuid())\n  user      User     @relation(fields: [userId], references: [id])\n  userId    String   @unique\n  createdAt DateTime @default(now())\n}\n\nmodel shopItem {\n  id          Int      @id @default(autoincrement())\n  title       String\n  price       Float\n  description String\n  shortDesc   String\n  images      String[]\n  sale        Float\n  stock       Int\n}\n\nmodel Artist {\n  uuid        String   @id @default(uuid())\n  name        String\n  description String\n  shortDesc   String\n  images      String[]\n}\n\nmodel Component {\n  id            Int     @id @unique @default(autoincrement())\n  importPath    String\n  nameComponent String\n  order         Int     @default(0)\n  pages         Page[]\n  imageSrc      String?\n}\n\nmodel Page {\n  id           Int         @id @default(autoincrement())\n  title        String\n  slug         String      @unique\n  shown        Boolean     @default(true)\n  last_updated DateTime    @default(now())\n  components   Component[]\n}\n\nmodel LocaleText {\n  key       String @unique\n  contentNL String\n  contentEN String\n}\n\nmodel Image {\n  id   Int    @id @default(autoincrement())\n  name String\n  src  String\n}\n",
   "runtimeDataModel": {
@@ -37,12 +37,14 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_bg.postgresql.mjs"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_bg.postgresql.wasm-base64.mjs")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs")
     return await decodeBase64AsWasm(wasm)
-  }
+  },
+
+  importName: "./query_compiler_fast_bg.js"
 }
 
 

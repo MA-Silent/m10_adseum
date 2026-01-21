@@ -7,13 +7,14 @@ import PopupButton from "../app/cms/cmsComponents/PopupButton";
 import Image from "next/image";
 import z from "zod";
 import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 const CmsImage = async ({ componentID, height, width, onCMS }: {componentID: number, height: number, width: number, onCMS: boolean }) => {
   const imageData = await getImage(componentID);
   const allImages = await getImages();
 
   return imageData.src !== null && imageData.name !== null ? (
-    <NextImage className="w-lg" loading="lazy" height={height} width={width} src={imageData.src} alt={imageData.name} />
+    <NextImage className={`w-lg`} loading="lazy" height={height} width={width} src={imageData.src} alt={imageData.name} />
   ) : (
     <div className="flex flex-col items-center">Image not found!
         {onCMS ? <PopupButton callBack={async (_, rawFormData) => {
@@ -32,6 +33,8 @@ const CmsImage = async ({ componentID, height, width, onCMS }: {componentID: num
               }
             });
             revalidateTag('getImages', 'max');
+            revalidateTag(`getImage:${componentID}`, 'max')
+            revalidatePath('/');
 
             return { success: true };
           }
