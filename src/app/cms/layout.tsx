@@ -100,8 +100,6 @@ export default async function CmsLayout({ children }: React.PropsWithChildren) {
                             data: { shown: data.shown == 'on' ? true : false, title: data.title }
                           });
 
-                          console.log(`${JSON.stringify(data)}`)
-
                           updateTag('pages');
                         }
 
