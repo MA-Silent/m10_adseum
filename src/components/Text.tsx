@@ -18,6 +18,7 @@ const Text: CmsComponent = async function ({ children, id, style, data, onCMS })
         text = await getDynamicText(`${id}-${index}`)
 
         return (
+          //@ts-expect-error it may exist
           !onCMS ? <div className={data?.className || ""} key={index}>{text}</div> : <div key={index}><TextInput onCMS={ onCMS } id={`${id}-${index}`}><></></TextInput></div>
         )
       }) || [])}
