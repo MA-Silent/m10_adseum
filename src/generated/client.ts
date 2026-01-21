@@ -74,3 +74,8 @@ export type Page = Prisma.PageModel
  * 
  */
 export type LocaleText = Prisma.LocaleTextModel
+/**
+ * Model Image
+ * 
+ */
+export type Image = Prisma.ImageModel

@@ -57,7 +57,8 @@ export const ModelName = {
   Artist: 'Artist',
   Component: 'Component',
   Page: 'Page',
-  LocaleText: 'LocaleText'
+  LocaleText: 'LocaleText',
+  Image: 'Image'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -125,7 +126,8 @@ export const ComponentScalarFieldEnum = {
   id: 'id',
   importPath: 'importPath',
   nameComponent: 'nameComponent',
-  order: 'order'
+  order: 'order',
+  imageSrc: 'imageSrc'
 } as const
 
 export type ComponentScalarFieldEnum = (typeof ComponentScalarFieldEnum)[keyof typeof ComponentScalarFieldEnum]
@@ -151,6 +153,15 @@ export const LocaleTextScalarFieldEnum = {
 export type LocaleTextScalarFieldEnum = (typeof LocaleTextScalarFieldEnum)[keyof typeof LocaleTextScalarFieldEnum]
 
 
+export const ImageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  src: 'src'
+} as const
+
+export type ImageScalarFieldEnum = (typeof ImageScalarFieldEnum)[keyof typeof ImageScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -165,4 +176,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

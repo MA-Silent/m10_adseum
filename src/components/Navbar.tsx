@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import test from "@/public/white-logo.png";
+import test from "@/public/white-logo.webp";
 import { CmsComponent } from "./componentType";
 import { getPages } from "../lib/pages";
 
-const links = await getPages()
-
 const NavBar : CmsComponent = async function ({ children, id, style }) {
+
+  const links = await getPages();
 
   return (
     <header id={id} style={style} className="group relative top-0 z-30 border-b border-white/10 bg-zinc-900/70 backdrop-blur-xl">
@@ -23,7 +23,7 @@ const NavBar : CmsComponent = async function ({ children, id, style }) {
           href="/"
           className="flex items-center gap-2"
         >
-          <Image src={test} alt="Adseum Logo" className="h-12 w-auto" />
+          <Image src={test} loading="eager" alt="Adseum Logo" className="h-12 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-1 text-sm font-medium text-zinc-100 md:flex">

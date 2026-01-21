@@ -41,6 +41,7 @@ export type ComponentMinAggregateOutputType = {
   importPath: string | null
   nameComponent: string | null
   order: number | null
+  imageSrc: string | null
 }
 
 export type ComponentMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type ComponentMaxAggregateOutputType = {
   importPath: string | null
   nameComponent: string | null
   order: number | null
+  imageSrc: string | null
 }
 
 export type ComponentCountAggregateOutputType = {
@@ -55,6 +57,7 @@ export type ComponentCountAggregateOutputType = {
   importPath: number
   nameComponent: number
   order: number
+  imageSrc: number
   _all: number
 }
 
@@ -74,6 +77,7 @@ export type ComponentMinAggregateInputType = {
   importPath?: true
   nameComponent?: true
   order?: true
+  imageSrc?: true
 }
 
 export type ComponentMaxAggregateInputType = {
@@ -81,6 +85,7 @@ export type ComponentMaxAggregateInputType = {
   importPath?: true
   nameComponent?: true
   order?: true
+  imageSrc?: true
 }
 
 export type ComponentCountAggregateInputType = {
@@ -88,6 +93,7 @@ export type ComponentCountAggregateInputType = {
   importPath?: true
   nameComponent?: true
   order?: true
+  imageSrc?: true
   _all?: true
 }
 
@@ -182,6 +188,7 @@ export type ComponentGroupByOutputType = {
   importPath: string
   nameComponent: string
   order: number
+  imageSrc: string | null
   _count: ComponentCountAggregateOutputType | null
   _avg: ComponentAvgAggregateOutputType | null
   _sum: ComponentSumAggregateOutputType | null
@@ -212,6 +219,7 @@ export type ComponentWhereInput = {
   importPath?: Prisma.StringFilter<"Component"> | string
   nameComponent?: Prisma.StringFilter<"Component"> | string
   order?: Prisma.IntFilter<"Component"> | number
+  imageSrc?: Prisma.StringNullableFilter<"Component"> | string | null
   pages?: Prisma.PageListRelationFilter
 }
 
@@ -220,6 +228,7 @@ export type ComponentOrderByWithRelationInput = {
   importPath?: Prisma.SortOrder
   nameComponent?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  imageSrc?: Prisma.SortOrderInput | Prisma.SortOrder
   pages?: Prisma.PageOrderByRelationAggregateInput
 }
 
@@ -231,6 +240,7 @@ export type ComponentWhereUniqueInput = Prisma.AtLeast<{
   importPath?: Prisma.StringFilter<"Component"> | string
   nameComponent?: Prisma.StringFilter<"Component"> | string
   order?: Prisma.IntFilter<"Component"> | number
+  imageSrc?: Prisma.StringNullableFilter<"Component"> | string | null
   pages?: Prisma.PageListRelationFilter
 }, "id" | "id">
 
@@ -239,6 +249,7 @@ export type ComponentOrderByWithAggregationInput = {
   importPath?: Prisma.SortOrder
   nameComponent?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  imageSrc?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ComponentCountOrderByAggregateInput
   _avg?: Prisma.ComponentAvgOrderByAggregateInput
   _max?: Prisma.ComponentMaxOrderByAggregateInput
@@ -254,12 +265,14 @@ export type ComponentScalarWhereWithAggregatesInput = {
   importPath?: Prisma.StringWithAggregatesFilter<"Component"> | string
   nameComponent?: Prisma.StringWithAggregatesFilter<"Component"> | string
   order?: Prisma.IntWithAggregatesFilter<"Component"> | number
+  imageSrc?: Prisma.StringNullableWithAggregatesFilter<"Component"> | string | null
 }
 
 export type ComponentCreateInput = {
   importPath: string
   nameComponent: string
   order?: number
+  imageSrc?: string | null
   pages?: Prisma.PageCreateNestedManyWithoutComponentsInput
 }
 
@@ -268,6 +281,7 @@ export type ComponentUncheckedCreateInput = {
   importPath: string
   nameComponent: string
   order?: number
+  imageSrc?: string | null
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutComponentsInput
 }
 
@@ -275,6 +289,7 @@ export type ComponentUpdateInput = {
   importPath?: Prisma.StringFieldUpdateOperationsInput | string
   nameComponent?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pages?: Prisma.PageUpdateManyWithoutComponentsNestedInput
 }
 
@@ -283,6 +298,7 @@ export type ComponentUncheckedUpdateInput = {
   importPath?: Prisma.StringFieldUpdateOperationsInput | string
   nameComponent?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pages?: Prisma.PageUncheckedUpdateManyWithoutComponentsNestedInput
 }
 
@@ -291,12 +307,14 @@ export type ComponentCreateManyInput = {
   importPath: string
   nameComponent: string
   order?: number
+  imageSrc?: string | null
 }
 
 export type ComponentUpdateManyMutationInput = {
   importPath?: Prisma.StringFieldUpdateOperationsInput | string
   nameComponent?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ComponentUncheckedUpdateManyInput = {
@@ -304,6 +322,7 @@ export type ComponentUncheckedUpdateManyInput = {
   importPath?: Prisma.StringFieldUpdateOperationsInput | string
   nameComponent?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ComponentCountOrderByAggregateInput = {
@@ -311,6 +330,7 @@ export type ComponentCountOrderByAggregateInput = {
   importPath?: Prisma.SortOrder
   nameComponent?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  imageSrc?: Prisma.SortOrder
 }
 
 export type ComponentAvgOrderByAggregateInput = {
@@ -323,6 +343,7 @@ export type ComponentMaxOrderByAggregateInput = {
   importPath?: Prisma.SortOrder
   nameComponent?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  imageSrc?: Prisma.SortOrder
 }
 
 export type ComponentMinOrderByAggregateInput = {
@@ -330,6 +351,7 @@ export type ComponentMinOrderByAggregateInput = {
   importPath?: Prisma.SortOrder
   nameComponent?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  imageSrc?: Prisma.SortOrder
 }
 
 export type ComponentSumOrderByAggregateInput = {
@@ -345,6 +367,10 @@ export type ComponentListRelationFilter = {
 
 export type ComponentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type ComponentCreateNestedManyWithoutPagesInput = {
@@ -389,6 +415,7 @@ export type ComponentCreateWithoutPagesInput = {
   importPath: string
   nameComponent: string
   order?: number
+  imageSrc?: string | null
 }
 
 export type ComponentUncheckedCreateWithoutPagesInput = {
@@ -396,6 +423,7 @@ export type ComponentUncheckedCreateWithoutPagesInput = {
   importPath: string
   nameComponent: string
   order?: number
+  imageSrc?: string | null
 }
 
 export type ComponentCreateOrConnectWithoutPagesInput = {
@@ -427,12 +455,14 @@ export type ComponentScalarWhereInput = {
   importPath?: Prisma.StringFilter<"Component"> | string
   nameComponent?: Prisma.StringFilter<"Component"> | string
   order?: Prisma.IntFilter<"Component"> | number
+  imageSrc?: Prisma.StringNullableFilter<"Component"> | string | null
 }
 
 export type ComponentUpdateWithoutPagesInput = {
   importPath?: Prisma.StringFieldUpdateOperationsInput | string
   nameComponent?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ComponentUncheckedUpdateWithoutPagesInput = {
@@ -440,6 +470,7 @@ export type ComponentUncheckedUpdateWithoutPagesInput = {
   importPath?: Prisma.StringFieldUpdateOperationsInput | string
   nameComponent?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ComponentUncheckedUpdateManyWithoutPagesInput = {
@@ -447,6 +478,7 @@ export type ComponentUncheckedUpdateManyWithoutPagesInput = {
   importPath?: Prisma.StringFieldUpdateOperationsInput | string
   nameComponent?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  imageSrc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -485,6 +517,7 @@ export type ComponentSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   importPath?: boolean
   nameComponent?: boolean
   order?: boolean
+  imageSrc?: boolean
   pages?: boolean | Prisma.Component$pagesArgs<ExtArgs>
   _count?: boolean | Prisma.ComponentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["component"]>
@@ -494,6 +527,7 @@ export type ComponentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   importPath?: boolean
   nameComponent?: boolean
   order?: boolean
+  imageSrc?: boolean
 }, ExtArgs["result"]["component"]>
 
 export type ComponentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -501,6 +535,7 @@ export type ComponentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   importPath?: boolean
   nameComponent?: boolean
   order?: boolean
+  imageSrc?: boolean
 }, ExtArgs["result"]["component"]>
 
 export type ComponentSelectScalar = {
@@ -508,9 +543,10 @@ export type ComponentSelectScalar = {
   importPath?: boolean
   nameComponent?: boolean
   order?: boolean
+  imageSrc?: boolean
 }
 
-export type ComponentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "importPath" | "nameComponent" | "order", ExtArgs["result"]["component"]>
+export type ComponentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "importPath" | "nameComponent" | "order" | "imageSrc", ExtArgs["result"]["component"]>
 export type ComponentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pages?: boolean | Prisma.Component$pagesArgs<ExtArgs>
   _count?: boolean | Prisma.ComponentCountOutputTypeDefaultArgs<ExtArgs>
@@ -528,6 +564,7 @@ export type $ComponentPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     importPath: string
     nameComponent: string
     order: number
+    imageSrc: string | null
   }, ExtArgs["result"]["component"]>
   composites: {}
 }
@@ -956,6 +993,7 @@ export interface ComponentFieldRefs {
   readonly importPath: Prisma.FieldRef<"Component", 'String'>
   readonly nameComponent: Prisma.FieldRef<"Component", 'String'>
   readonly order: Prisma.FieldRef<"Component", 'Int'>
+  readonly imageSrc: Prisma.FieldRef<"Component", 'String'>
 }
     
 
