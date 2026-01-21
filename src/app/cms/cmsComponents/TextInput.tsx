@@ -29,8 +29,8 @@ const TextInput: CmsComponent = ({children, id, style}) => {
     <div className="relative size-fit w-full" id={id} style={style}>
       {children}
         <form className="size-full" onSubmit={(e) => { e.preventDefault(); addAction({ type: 'InsertText', key: id, componentID: componentID ,contentEN: content }) }}>
-        <textarea name="Text" ref={ref} placeholder="Insert text here" className="size-full resize-none min-h-[1em]" onInput={(e)=>{e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px'}} onChange={(e) => setContent(e.currentTarget.value)} defaultValue={text}></textarea>
-          {content && content != text && <button type="submit" className="bg-chart-2">Done</button>}
+        <textarea name="Text" ref={ref} placeholder="Insert text here" className="size-full resize-none min-h-[2em] w-sm text-center" onInput={(e)=>{e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px'}} onChange={(e) => setContent(e.currentTarget.value)} defaultValue={text}></textarea>
+          {content && content != text ? <button type="submit" className="bg-chart-2">Done</button> : null}
         </form>
     </div>
   )

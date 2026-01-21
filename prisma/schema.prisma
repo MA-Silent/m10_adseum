@@ -48,6 +48,7 @@ model Component {
   nameComponent String
   order Int @default(0)
   pages Page[]
+  imageSrc String?
 }
 
 model Page {
@@ -63,4 +64,10 @@ model LocaleText {
   key String @unique
   contentNL String
   contentEN String
+}
+
+model Image {
+  id Int @default(autoincrement()) @id
+  name String
+  src String
 }

@@ -27,9 +27,8 @@ export default getRequestConfig(async () => {
       .map(l => l.trim().slice(0, 2))
       .filter(l => /^[a-z]{2}$/.test(l));
 
-      locale = candidates.find(c => locales.includes(c)) || "en";
+    locale = candidates.find(c => locales.includes(c)) || "en";
   }
-
 
   return {
     locale,

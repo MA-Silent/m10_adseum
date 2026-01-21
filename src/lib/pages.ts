@@ -36,7 +36,7 @@ export const getPages = (): Promise<Page[]> => unstable_cache(
 export const getDynamicText = (textKey: string): Promise<string> => unstable_cache(
   async () => {
     const locale = (await getLocale()).trim().toLowerCase();
-    const result = await prisma.localeText.findUnique({ where: { key: textKey } }) || {contentEN: "No Text Found", contentNL: "No Text Found"}
+    const result = await prisma.localeText.findUnique({ where: { key: textKey } }) || {contentEN: "", contentNL: ""}
 
     return locale == 'nl' ? result.contentNL : result.contentEN
   },
