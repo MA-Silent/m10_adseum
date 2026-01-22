@@ -1,7 +1,7 @@
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field"
 import { Input } from "@/components/ui/input";
 import { prisma } from "@/src/lib/prisma"
-import { Edit, Trash } from "lucide-react";
+import { Edit, Plus, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PopupButton from "../cmsComponents/PopupButton";
 import * as React from "react"
@@ -24,6 +24,11 @@ export default async function userManagementPage() {
   async function deleteUser(user: User) {
     'use server'
     if (!(await isLoggedin())) return;
+
+    await prisma.session.deleteMany({
+      where: {
+        userId: user.id
+    } })
 
     await prisma.user.delete({
       where: { id: user.id }
@@ -53,6 +58,26 @@ export default async function userManagementPage() {
     }
     revalidatePath('/cms/users');
     return result;
+  }
+
+  async function addUser(email: string, password: string): Promise<boolean> {
+    'use server'
+
+    try {
+      await prisma.user.create({
+        data: {
+          email: email,
+          name: email,
+          password: await bcrypt.hash(password, 10)
+        }
+      });
+    } catch {
+      return false
+    }
+
+    revalidatePath('/cms/users');
+
+    return true;
   }
 
   return(
@@ -133,7 +158,6 @@ export default async function userManagementPage() {
                           </div>
                         </div>
                       </PopupButton>
-
                     </div>
                   </td>
                 </tr>
@@ -142,6 +166,46 @@ export default async function userManagementPage() {
           })}
         </tbody>
       </table>
+
+      <PopupButton callBack={async (_, rawFormData): Promise<{ success: boolean }> => {
+        'use server'
+        if (!(await isLoggedin())) return { success: false };
+
+        const editSchema = z.object({ email: z.email(), password: z.string() })
+        const { success, data} = editSchema.safeParse( Object.fromEntries(rawFormData.entries()) )
+        if (!success) return {success: false};
+
+        return {
+          success: await addUser(data.email, data.password)
+        };
+      }} toastData={{ title: 'An error occurred', description: 'An error occurred while trying to add a user' }}
+      icon={<Plus className="hover:cursor-pointer" />}>
+        <div className="fixed size-fit top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-foreground">
+          <div className="relative h-fit w-xl bg-background border rounded-2xl p-6">
+            <h1>Adding a user</h1>
+
+            <FieldSet className="pt-6">
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <Input id="email" type="email" name="email" defaultValue="example@example.com" placeholder="example@example.com" />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <Input id="password" type="password" name="password" placeholder="••••••••" />
+                </Field>
+                <Field className="flex flex-row">
+                  <div className="flex gap-2 justify-end">
+                    <Button>Submit</Button>
+                  </div>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+
+          </div>
+        </div>
+      </PopupButton>
+
     </div>
   )
 }

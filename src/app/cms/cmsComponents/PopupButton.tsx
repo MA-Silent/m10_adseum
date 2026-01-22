@@ -22,7 +22,7 @@ export default function PopupButton({children, icon, callBack, toastData}: userM
   return (
     <>
       <button className="size-fit" onClick={()=>setOpen((prev)=>!prev)}>{icon}</button>
-      {open && <div onClick={()=>setOpen(false)} className="fixed top-0 left-0 bottom-0 right-0 bg-background/60 z-60" />}
+      {open && <div onClick={()=>setOpen(false)} className="fixed top-0 left-0 bottom-0 right-0 bg-background/60" />}
       {open && <form className="z-60" action={formAction}> {children} </form>}
     </>
   )
