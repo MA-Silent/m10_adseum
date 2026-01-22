@@ -18,12 +18,12 @@ const NavBar : CmsComponent = async function ({ children, id, style }) {
         className="hidden"
       />
 
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6 md:py-6">
         <Link
           href="/"
           className="flex items-center gap-2"
         >
-          <Image src={test} loading="eager" alt="Adseum Logo" className="h-12 w-auto" />
+          <Image src={test} height={60} width={60} priority loading="eager" alt="Adseum Logo" className="h-12 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-1 text-sm font-medium text-zinc-100 md:flex">

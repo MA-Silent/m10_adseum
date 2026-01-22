@@ -15,10 +15,10 @@ export default async function Page({ params }: { params: Promise<{ page: string 
 	}
 
 	return (
-		<div className="flex flex-col">
+		<main className="flex flex-col">
 			{components.map(async (Component, index)=>{
         return <Component onCMS={false} id={`${page.slug}:${page.components[index].id}`} style={{order: page.components[index].order}} key={index}><></></Component>
 			}) }
-		</div>
+		</main>
 	)
 }
