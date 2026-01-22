@@ -23,7 +23,7 @@ const NavBar : CmsComponent = async function ({ children, id, style }) {
           href="/"
           className="flex items-center gap-2"
         >
-          <Image src={test} height={60} width={60} priority loading="eager" alt="Adseum Logo" className="h-12 w-auto" />
+          <Image src={test} height={60} width={60} priority loading="eager" alt="Adseum Logo" className="h-10 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-1 text-sm font-medium text-zinc-100 md:flex">
